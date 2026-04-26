@@ -23,7 +23,7 @@ public class EmailService {
     }
 
     /**
-     * Überprüft ob die Zugangsdaten korrekt sind
+     * Überprüft, ob die Zugangsdaten korrekt sind
      * @return true wenn erfolgreich, false wenn fehlgeschlagen
      */
     public boolean validateLogin() {
