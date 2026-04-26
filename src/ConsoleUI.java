@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class ConsoleUI {
-    private EmailService emailService;
-    private Scanner input;
+    private final EmailService emailService;
+    private final Scanner input;
     private Message[] messages;
     private int maxEmails = 10;
     private String signature = "Gesendet mit ConsoleMail";
