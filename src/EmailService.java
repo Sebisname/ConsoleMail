@@ -9,6 +9,11 @@ public class EmailService {
     private Store store;
     private Folder inbox;
 
+    /**
+     * Erstellt einen neuen EmailService
+     * @param email Die Gmail-Adresse des Benutzers
+     * @param password Das App-Passwort des Benutzers
+     */
     public EmailService(String email, String password) {
         this.email = email;
         this.password = password;
@@ -43,8 +48,8 @@ public class EmailService {
     }
 
     /**
-     * Um SMTP Props zu kriegen
-     * Für sendEmail
+     * Um SMTP Props zu kriegen,
+     * für sendEmail
      * @return props um alle Properties
      */
     private Properties getSmtpProps() {
@@ -57,8 +62,8 @@ public class EmailService {
     }
 
     /**
-     * Um IMAP Props zu kriegen
-     * Für fetchEmail
+     * Um IMAP Props zu kriegen,
+     * für fetchEmail
      * @return props um alle Properties
      */
     private Properties getImapProps() {
@@ -70,7 +75,7 @@ public class EmailService {
     }
 
     /**
-     * Methode um Emails zu versenden
+     * Methode um E-Mails zu versenden
      * (verwendet SMTP Props)
      *
      * @param to Empfänger
@@ -138,6 +143,9 @@ public class EmailService {
         }
     }
 
+    /**
+     * Zum Logout
+     */
     public void disconnect() {
         try {
             store.close();

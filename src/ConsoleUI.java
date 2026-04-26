@@ -11,6 +11,10 @@ public class ConsoleUI {
     private int maxEmails = 10;
     private String signature = "Gesendet mit ConsoleMail";
 
+    /**
+     * Vorbereitung (E-Mails werden schon mal vorab gefetcht)
+     * @param emailService wird für this.emailService gebraucht
+     */
     public ConsoleUI(EmailService emailService) {
         this.emailService = emailService;
         this.input = new Scanner(System.in);
@@ -105,6 +109,9 @@ public class ConsoleUI {
 
     }
 
+    /**
+     * Modul zum E-Mail schreiben
+     */
     public void composeEmail() {
         System.out.println("To:");
         String to = input.nextLine();
