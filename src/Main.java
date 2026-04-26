@@ -41,7 +41,6 @@ public class Main {
     public static boolean isValidEmail(String email) {
         if(email.isEmpty()) return false;
         if(!email.contains("@")) return false;
-        if(!email.endsWith("@gmail.com")) return false;
-        return true;
+        return email.endsWith("@gmail.com");
     }
 }
