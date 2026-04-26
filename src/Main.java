@@ -1,5 +1,3 @@
-import jakarta.mail.*;
-
 import java.util.Scanner;
 
 public class Main {
