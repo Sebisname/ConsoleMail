@@ -82,8 +82,8 @@ public class ConsoleUI {
     }
 
     /**
-     * Zeigt ausgewählte Email
-     * @param message Ausgewählte Email
+     * Zeigt ausgewählte E-Mail
+     * @param message Ausgewählte E-Mail
      */
     public void showEmail(Message message) {
         try {
