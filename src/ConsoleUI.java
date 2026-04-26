@@ -94,7 +94,7 @@ public class ConsoleUI {
 
             if(content instanceof String) {
                 System.out.println("Content: " + content);
-            } else if(content instanceof MimeMultipart) {
+            } else if(content instanceof MimeMultipart multipart) {
 
                 MimeMultipart multipart = (MimeMultipart) content;
                 System.out.println("Content: " + multipart.getBodyPart(0).getContent().toString());
