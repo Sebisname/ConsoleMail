@@ -53,7 +53,7 @@ public class ConsoleUI {
     }
 
     /**
-     * Wird verwendet um die Inbox anzuzeigen
+     * Wird verwendet, um die Inbox anzuzeigen
      */
     public void showInbox() {
         messages = emailService.fetchEmail(maxEmails);
