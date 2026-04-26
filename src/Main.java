@@ -31,6 +31,13 @@ public class Main {
         service.disconnect();
     }
 
+    /**
+     * Prüft, ob die eingegebene E-Mail eine gmail.com Adresse ist
+     * (Sonst würde es nicht funktionieren)
+     *
+     * @param email E-Mail-Adresse zum Prüfen
+     * @return true/false je nachdem ob es eine Valide Adresse ist
+     */
     public static boolean isValidEmail(String email) {
         if(email.isEmpty()) return false;
         if(!email.contains("@")) return false;
