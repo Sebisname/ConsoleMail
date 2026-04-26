@@ -23,9 +23,11 @@ public class Main {
             return;
         }
 
+        //Main Menu aufrufen
         ConsoleUI ui = new ConsoleUI(service);
         ui.showMenu();
 
+        //Logout
         service.disconnect();
     }
 
