@@ -9,7 +9,7 @@ public class ConsoleUI {
     private Scanner input;
     private Message[] messages;
     private int maxEmails = 10;
-    private String signature = "Gesendet mit KonsolenMail";
+    private String signature = "Gesendet mit ConsoleMail";
 
     public ConsoleUI(EmailService emailService) {
         this.emailService = emailService;
@@ -81,6 +81,10 @@ public class ConsoleUI {
         }
     }
 
+    /**
+     * Zeigt ausgewählte Email
+     * @param message Ausgewählte Email
+     */
     public void showEmail(Message message) {
         try {
             System.out.println("From: " + message.getFrom()[0].toString());
