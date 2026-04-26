@@ -61,7 +61,7 @@ public class ConsoleUI {
             for (int i = 0; i < messages.length; i++) {
                 System.out.println("Message "+(i+1)+": ");
                 System.out.println("From:"+ messages[i].getFrom()[0].toString());
-                System.out.println("Subject"+ messages[i].getSubject().toString());
+                System.out.println("Subject"+ messages[i].getSubject());
                 System.out.println("Press "+(i+1)+" to read");
 
             }
