@@ -4,8 +4,8 @@ import java.util.Properties;
 
 public class EmailService {
 
-    private String email;
-    private String password;
+    private final String email;
+    private final String password;
     private Store store;
     private Folder inbox;
 
