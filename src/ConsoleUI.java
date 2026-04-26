@@ -120,6 +120,9 @@ public class ConsoleUI {
 
     }
 
+    /**
+     * Einstellungen des Programms
+     */
     public void settings() {
         System.out.println("Settings:");
         System.out.println("1. Max Emails shown: "+maxEmails);
