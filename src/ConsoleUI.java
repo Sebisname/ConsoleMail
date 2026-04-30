@@ -132,12 +132,15 @@ public class ConsoleUI {
      */
     public void settings() {
         System.out.println("Settings:");
+        System.out.println("0. to Exit");
         System.out.println("1. Max Emails shown: "+maxEmails);
         System.out.println("2. Edit Signature: "+signature);
         System.out.println("Please enter the Number of the Setting you want to edit:");
         int choice = Integer.parseInt(input.nextLine());
 
         switch (choice) {
+            case 0:
+                break;
             case 1:
                 System.out.println("Set new Maximum:");
                 maxEmails = Integer.parseInt(input.nextLine());
