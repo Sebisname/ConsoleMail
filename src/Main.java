@@ -50,6 +50,7 @@ public class Main {
         }
 
 
+        System.out.println("Logged in successfully.");
         //Main Menu aufrufen
         ConsoleUI ui = new ConsoleUI(service);
         ui.showMenu();
