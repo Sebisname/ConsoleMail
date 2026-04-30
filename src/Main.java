@@ -1,27 +1,54 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
     static void main() {
         Scanner input = new Scanner(System.in);
+        EmailService service = null;
+        StorageService storage = new StorageService();
+        if(new File("email.properties").exists()) {
+            String[] credentials = null;
+            try {
+                credentials = storage.loadCredentials();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
 
-        //Login
+            String email = credentials[0];
+            String password = credentials[1];
 
-        System.out.print("Enter your Email: ");
-        String email = input.nextLine();
+            service = new EmailService(email, password);
 
-        while(!isValidEmail(email)){
-            System.out.println("Please enter a valid Gmail Address");
-            email = input.nextLine();
+            if (!service.validateLogin()) {
+                System.out.println("Credentials are incorrect.");
+                return;
+            }
+        } else {
+
+            //Login
+
+            System.out.print("Enter your Email: ");
+            String email = input.nextLine();
+
+            while (!isValidEmail(email)) {
+                System.out.println("Please enter a valid Gmail Address");
+                email = input.nextLine();
+            }
+
+            System.out.print("Enter your Password: ");
+            String password = input.nextLine();
+
+            service = new EmailService(email, password);
+
+            if (!service.validateLogin()) {
+                System.out.println("Falsches Passwort oder Email!");
+                return;
+            }
+
+            storage.askRememberMe(email,password);
         }
 
-        System.out.print("Enter your Password: ");
-        String password = input.nextLine();
-        EmailService service = new EmailService(email,password);
-
-        if(!service.validateLogin()) {
-            System.out.println("Falsches Passwort oder Email!");
-            return;
-        }
 
         //Main Menu aufrufen
         ConsoleUI ui = new ConsoleUI(service);

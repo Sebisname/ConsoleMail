@@ -36,3 +36,5 @@ bin/
 # Kompilierte Dateien
 out/
 *.class
+
+*.properties
