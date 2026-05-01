@@ -5,6 +5,12 @@ import java.util.Scanner;
 public class StorageService {
 
     Properties properties = new Properties();
+
+    /**
+     * Abfrage für das speichern der Email, und Passwort
+     * @param email
+     * @param password
+     */
     public void askRememberMe(String email, String password) {
         Scanner input = new Scanner(System.in);
         System.out.println("Angemeldet Bleiben? (j/n)");
@@ -20,7 +26,14 @@ public class StorageService {
         }
     }
 
+    /**
+     * erstellet email.properties und speichert dort die email und das passwort als Property
+     * @param email
+     * @param password
+     */
     public void saveCredentials(String email, String password){
+        // Passwort wird unverschlüsselt gespeichert
+        // Für Produktionscode sollte Verschlüsselung verwendet werden
         properties.setProperty("email", email);
         properties.setProperty("password", password);
         try {
@@ -31,6 +44,11 @@ public class StorageService {
 
     }
 
+    /**
+     * Ladet die Credentials aus email.properties
+     * @return {email,password} in einem Array
+     * @throws IOException wegen dem try, catch
+     */
     public String[] loadCredentials() throws IOException {
         try {
             FileInputStream inputStream = new FileInputStream("email.properties");
@@ -44,6 +62,9 @@ public class StorageService {
         }
     }
 
+    /**
+     * Löscht die Credentials zum Abmelden
+     */
     public void deleteCredentials() {
             new File("email.properties").delete();
     }
