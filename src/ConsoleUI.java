@@ -28,7 +28,6 @@ public class ConsoleUI {
         boolean running = true;
         while (running) {
 
-            System.out.println("Welcome back " + emailService.getEmail());
             System.out.println("You have " + messages.length + " messages");
             System.out.println("Please enter your choice: ");
             System.out.println("1. Send a Message");
