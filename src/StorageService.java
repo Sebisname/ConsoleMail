@@ -3,6 +3,7 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class StorageService {
+
     Properties properties = new Properties();
     public void askRememberMe(String email, String password) {
         Scanner input = new Scanner(System.in);
@@ -41,6 +42,9 @@ public class StorageService {
             System.out.println("Error loading Credentials");
             return new String[0];
         }
+    }
 
+    public void deleteCredentials() {
+            new File("email.properties").delete();
     }
 }

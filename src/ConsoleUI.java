@@ -35,6 +35,7 @@ public class ConsoleUI {
             System.out.println("2. See Inbox");
             System.out.println("3. Settings");
             System.out.println("4. Exit");
+            System.out.println("5. Logout");
             int choice = Integer.parseInt(input.nextLine());
             switch (choice) {
                 case 1:
@@ -49,7 +50,12 @@ public class ConsoleUI {
                 case 4:
                     running = false;
                     break;
-
+                case 5:
+                    StorageService storage = new StorageService();
+                        storage.deleteCredentials();
+                default:
+                    System.out.println("Invalid choice.");
+                    break;
             }
         }
         System.out.println("Bye!");
