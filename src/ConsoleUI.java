@@ -3,6 +3,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.util.Scanner;
+import java.text.SimpleDateFormat;
 
 public class ConsoleUI {
     private final EmailService emailService;
@@ -10,6 +11,7 @@ public class ConsoleUI {
     private Message[] messages;
     private int maxEmails = 10;
     private String signature = "Gesendet mit ConsoleMail";
+    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
     /**
      * Vorbereitung (E-Mails werden schon mal vorab gefetcht)
@@ -71,6 +73,7 @@ public class ConsoleUI {
                 System.out.println("Message "+(i+1)+": ");
                 System.out.println("From:"+ messages[i].getFrom()[0].toString());
                 System.out.println("Subject"+ messages[i].getSubject());
+                System.out.println(sdf.format(messages[i].getSentDate()));
                 System.out.println("Press "+(i+1)+" to read");
 
             }
@@ -96,6 +99,7 @@ public class ConsoleUI {
      */
     public void showEmail(Message message) {
         try {
+            System.out.println(sdf.format(message.getSentDate()));
             System.out.println("From: " + message.getFrom()[0].toString());
             System.out.println("Subject: " + message.getSubject());
 
