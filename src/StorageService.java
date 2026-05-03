@@ -66,6 +66,11 @@ public class StorageService {
      * Löscht die Credentials zum Abmelden
      */
     public void deleteCredentials() {
-            new File("email.properties").delete();
+        boolean delete = new File("email.properties").delete();
+        if (!delete) {
+            System.out.println("Error deleting Credentials");
+        } else  {
+            System.out.println("Successfully Logged out");
+        }
     }
 }
