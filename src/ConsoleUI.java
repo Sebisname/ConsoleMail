@@ -12,6 +12,7 @@ public class ConsoleUI {
     private int maxEmails = 10;
     private String signature = "Gesendet mit ConsoleMail";
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    StorageService storage = new StorageService();
 
     /**
      * Vorbereitung (E-Mails werden schon mal vorab gefetcht)
@@ -52,8 +53,9 @@ public class ConsoleUI {
                     running = false;
                     break;
                 case 5:
-                    StorageService storage = new StorageService();
-                        storage.deleteCredentials();
+                    storage.deleteCredentials();
+                    running = false;
+                    break;
                 default:
                     System.out.println("Invalid choice.");
                     break;
