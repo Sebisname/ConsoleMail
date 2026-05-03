@@ -55,6 +55,7 @@ public class StorageService {
             properties.load(inputStream);
             String email = properties.getProperty("email");
             String password = properties.getProperty("password");
+            inputStream.close();
             return new String[]{email,password};
         } catch (IOException e) {
             System.out.println("Error loading Credentials");
