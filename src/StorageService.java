@@ -37,7 +37,7 @@ public class StorageService {
      * @param password User Password
      */
     public void saveCredentials(String email, String password){
-        // Passwort wird unverschlüsselt gespeichert
+        // Passwort wird unverschlüsselt gespeichert.
         // Für Produktionscode sollte Verschlüsselung verwendet werden
         properties.setProperty("email", email);
         properties.setProperty("password", password);
