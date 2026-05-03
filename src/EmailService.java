@@ -20,7 +20,7 @@ public class EmailService {
     }
 
     /**
-     * Methode für die Email (um DRY zu bleiben weil oft verwendet)
+     * Methode für die E-Mail (um DRY zu bleiben, weil oft verwendet)
      * @return email
      */
     public String getEmail() {
@@ -109,7 +109,7 @@ public class EmailService {
     }
 
     /**
-     * Probiert mir den IAMP Props alle Emails abzurufen
+     * Probiert mir den IAMP Props alle E-Mails abzurufen
      * (falls fehlschlägt wird nichts zurückgegeben)
      * @return messages
      */
