@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class StorageService {
 
     Properties properties = new Properties();
+    private final Scanner input = new Scanner(System.in);
 
     /**
      * Abfrage für das speichern der E-Mail, und Passwort
@@ -12,9 +13,13 @@ public class StorageService {
      * @param password Password
      */
     public void askRememberMe(String email, String password) {
-        Scanner input = new Scanner(System.in);
         System.out.println("Angemeldet Bleiben? (j/n)");
-        String answer = input.nextLine();
+        String answer;
+        try {
+            answer = input.nextLine();
+        } catch (Exception e) {
+            answer = "-1";
+        }
         switch (answer) {
             case "j":
                 saveCredentials(email,password);
@@ -47,9 +52,8 @@ public class StorageService {
     /**
      * Ladet die Credentials aus email.properties
      * @return {email,password} in einem Array
-     * @throws IOException wegen dem try, catch
      */
-    public String[] loadCredentials() throws IOException {
+    public String[] loadCredentials(){
         try {
             FileInputStream inputStream = new FileInputStream("email.properties");
             properties.load(inputStream);

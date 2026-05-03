@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -9,11 +8,7 @@ public class Main {
         StorageService storage = new StorageService();
         if(new File("email.properties").exists()) {
             String[] credentials = null;
-            try {
-                credentials = storage.loadCredentials();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
+            credentials = storage.loadCredentials();
 
             String email = credentials[0];
             String password = credentials[1];

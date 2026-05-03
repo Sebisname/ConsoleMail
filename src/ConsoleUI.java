@@ -24,6 +24,14 @@ public class ConsoleUI {
         this.messages = emailService.fetchEmail(maxEmails);
     }
 
+    private int getIntInput(){
+        try{
+            return Integer.parseInt(input.nextLine());
+        } catch(NumberFormatException e){
+            return -1;
+        }
+    }
+
     /**
      * Das Hauptmenü der Programms
      */
@@ -38,7 +46,7 @@ public class ConsoleUI {
             System.out.println("3. Settings");
             System.out.println("4. Exit");
             System.out.println("5. Logout");
-            int choice = Integer.parseInt(input.nextLine());
+            int choice = getIntInput();
             switch (choice) {
                 case 1:
                     composeEmail();
@@ -84,7 +92,7 @@ public class ConsoleUI {
         }
         System.out.println("Please enter the Email you want to read ");
         System.out.println("(Press 0 to exit to the Main Menu)");
-        int choice = Integer.parseInt(input.nextLine());
+        int choice = getIntInput();
 
         if(choice == 0) {
             showMenu();
@@ -147,7 +155,7 @@ public class ConsoleUI {
         System.out.println("1. Max Emails shown: "+maxEmails);
         System.out.println("2. Edit Signature: "+signature);
         System.out.println("Please enter the Number of the Setting you want to edit:");
-        int choice = Integer.parseInt(input.nextLine());
+        int choice = getIntInput();
 
         switch (choice) {
             case 0:
