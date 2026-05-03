@@ -7,9 +7,9 @@ public class StorageService {
     Properties properties = new Properties();
 
     /**
-     * Abfrage für das speichern der Email, und Passwort
-     * @param email
-     * @param password
+     * Abfrage für das speichern der E-Mail, und Passwort
+     * @param email Email
+     * @param password Password
      */
     public void askRememberMe(String email, String password) {
         Scanner input = new Scanner(System.in);
@@ -27,9 +27,9 @@ public class StorageService {
     }
 
     /**
-     * erstellet email.properties und speichert dort die email und das passwort als Property
-     * @param email
-     * @param password
+     * erstellet E-Mail.properties und speichert dort die E-Mail und das passwort als Property
+     * @param email E-Mail
+     * @param password User Password
      */
     public void saveCredentials(String email, String password){
         // Passwort wird unverschlüsselt gespeichert
