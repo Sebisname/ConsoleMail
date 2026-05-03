@@ -24,6 +24,10 @@ public class ConsoleUI {
         this.messages = emailService.fetchEmail(maxEmails);
     }
 
+    /**
+     * Regelt den Fehler falls kein Int angegeben wird
+     * @return Input in Int oder -1 wenn keine Zahl
+     */
     private int getIntInput(){
         try{
             return Integer.parseInt(input.nextLine());

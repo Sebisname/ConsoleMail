@@ -6,7 +6,9 @@ public class Main {
         Scanner input = new Scanner(System.in);
         EmailService service = null;
         StorageService storage = new StorageService();
+
         if(new File("email.properties").exists()) {
+
             String[] credentials = null;
             credentials = storage.loadCredentials();
 
