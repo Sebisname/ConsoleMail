@@ -8,7 +8,7 @@ public class StorageService {
     private final Scanner input = new Scanner(System.in);
 
     /**
-     * Abfrage für das speichern der E-Mail, und Passwort
+     * Abfrage für das Speichern der E-Mail, und Passwort
      * @param email Email
      * @param password Password
      */
