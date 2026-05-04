@@ -19,6 +19,7 @@ public class Main {
 
             if (!service.validateLogin()) {
                 System.out.println("Credentials are incorrect.");
+                storage.deleteCredentials();
                 return;
             }
         } else {
