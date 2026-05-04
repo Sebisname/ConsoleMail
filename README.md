@@ -18,7 +18,7 @@ Falls noch nicht aktiv:
 
 ### 2. App-Passwort erstellen
 - `myaccount.google.com/apppasswords`
-- Namen eingeben (z.B. "KonsolenMail") → Erstellen
+- Namen eingeben (z.B. "ConsoleMail") → Erstellen
 - Das **16-stellige Passwort** kopieren — dieses wird im Programm als Passwort verwendet
 
 ### 3. IMAP in Gmail aktivieren
