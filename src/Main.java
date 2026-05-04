@@ -4,12 +4,12 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        EmailService service = null;
+        EmailService service;
         StorageService storage = new StorageService();
 
         if(new File("email.properties").exists()) {
 
-            String[] credentials = null;
+            String[] credentials;
             credentials = storage.loadCredentials();
 
             String email = credentials[0];
