@@ -2,7 +2,7 @@ import java.io.File;
 import java.util.Scanner;
 
 public class Main {
-    static void main() {
+    public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         EmailService service = null;
         StorageService storage = new StorageService();
