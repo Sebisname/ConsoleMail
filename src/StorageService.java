@@ -16,7 +16,7 @@ public class StorageService {
         System.out.println("Angemeldet Bleiben? (j/n)");
         String answer;
         try {
-            answer = input.nextLine();
+            answer = input.nextLine().toLowerCase();
         } catch (Exception e) {
             answer = "-1";
         }
