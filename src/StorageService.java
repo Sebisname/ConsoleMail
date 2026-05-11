@@ -10,6 +10,8 @@ public class StorageService {
     public StorageService() {
     }
 
+    EmailService emailService;
+
     /**
      * Abfrage für das Speichern der E-Mail, und Passwort
      * @param email Email
@@ -170,8 +172,15 @@ public class StorageService {
         return listPropFiles().length > 0;
     }
 
+    /**
+     *
+     */
     public void changeAccount(){
         System.out.println("Change Account to:");
-        selectAccount();
+        int id = selectAccount();
+        String[] credentials = loadCredentials(id);
+        String email = credentials[0];
+        String password = credentials[1];
+        emailService = new EmailService(email, password);
     }
 }

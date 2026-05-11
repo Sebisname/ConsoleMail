@@ -167,8 +167,8 @@ public class ConsoleUI {
                 System.out.println(emailService.getEmail());
                 break;
             case 2:
-                running = false;
-
+                //emailService.disconnect();
+                storage.changeAccount();
                 break;
             case 3:
                 storage.deleteCredentials(id);

@@ -4,8 +4,8 @@ import java.util.Properties;
 
 public class EmailService {
 
-    private final String email;
-    private final String password;
+    private String email;
+    private String password;
     private Store store;
     private Folder inbox;
 
@@ -192,6 +192,5 @@ public class EmailService {
         } catch (MessagingException e) {
             System.out.println("Email service failed to close email: "+e.getMessage());
         }
-        }
-
+    }
 }
