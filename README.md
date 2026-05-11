@@ -1,29 +1,38 @@
 # ConsoleMail
 
 Ein einfacher E-Mail-Client der vollständig in der Konsole läuft.
+Unterstützt Gmail, Outlook, GMX und iCloud.
 
 ---
 
-## Wichtig vor dem Start
+## Libraries einbinden
 
-Das Programm funktioniert **nur mit Gmail** und benötigt ein sogenanntes **App-Passwort** — kein normales Gmail-Passwort!
+Folgende JARs herunterladen und in IntelliJ einbinden (`File → Project Structure → Libraries → +`):
+- [jakarta.mail-2.0.1.jar](https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail/2.0.1)
+- [jakarta.activation-2.0.1.jar](https://mvnrepository.com/artifact/com.sun.activation/jakarta.activation/2.0.1)
 
 ---
 
-## Einrichtung
+## Einrichtung je nach Anbieter
 
-### 1. 2-Faktor-Authentifizierung aktivieren
-Falls noch nicht aktiv:
-- `myaccount.google.com → Sicherheit → 2-Schritt-Verifizierung → Aktivieren`
+### Gmail
+1. 2-Faktor-Authentifizierung aktivieren: `myaccount.google.com → Sicherheit → 2-Schritt-Verifizierung`
+2. App-Passwort erstellen: `myaccount.google.com/apppasswords` → Namen eingeben → 16-stelliges Passwort kopieren
+3. IMAP aktivieren: Gmail → Einstellungen → Alle Einstellungen → `Weiterleitung und POP/IMAP → IMAP aktivieren`
+4. Login: Gmail-Adresse + App-Passwort
 
-### 2. App-Passwort erstellen
-- `myaccount.google.com/apppasswords`
-- Namen eingeben (z.B. "ConsoleMail") → Erstellen
-- Das **16-stellige Passwort** kopieren — dieses wird im Programm als Passwort verwendet
+### Outlook
+1. IMAP aktivieren: `outlook.com → Einstellungen → Mail → Sync Email → POP und IMAP → IMAP aktivieren`
+2. Login: Outlook-Adresse + normales Passwort
 
-### 3. IMAP in Gmail aktivieren
-- Gmail öffnen → Einstellungen (Zahnrad) → Alle Einstellungen
-- `Weiterleitung und POP/IMAP → IMAP aktivieren → Speichern`
+### GMX
+1. IMAP aktivieren: `gmx.at → Einstellungen → E-Mail → Postfach → POP3/IMAP Abruf → IMAP aktivieren`
+2. Login: GMX-Adresse + normales Passwort
+
+### iCloud
+1. 2-Faktor-Authentifizierung aktivieren: `appleid.apple.com → Sicherheit`
+2. App-Passwort erstellen: `appleid.apple.com → Anmeldung und Sicherheit → App-Passwörter`
+3. Login: iCloud-Adresse + App-Passwort
 
 ---
 
@@ -31,11 +40,24 @@ Falls noch nicht aktiv:
 
 1. Projekt in IntelliJ öffnen
 2. `Main.java` ausführen
-3. Gmail-Adresse eingeben
-4. App-Passwort eingeben (nicht das normale Gmail-Passwort!)
+3. E-Mail-Adresse eingeben
+4. Passwort eingeben (je nach Anbieter normales Passwort oder App-Passwort)
 
 ---
 
-## Verwendete Library
+## Features
 
-[Jakarta Mail 2.0.1](https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail/2.0.1) — muss als JAR in IntelliJ eingebunden sein.
+- Posteingang lesen
+- Emails verfassen und senden
+- Mehrere Accounts speichern und wechseln
+- Auto-Login
+- Signatur
+- Einstellbare Anzahl angezeigter Emails
+
+---
+
+## Hinweise
+
+- Passwörter werden unverschlüsselt gespeichert — nur auf vertrauenswürdigen Geräten verwenden
+- Das Passwort wird bei der Eingabe sichtbar angezeigt (Einschränkung der IntelliJ Konsole)
+- Schul- oder Work-Konten funktionieren möglicherweise nicht wenn der Admin IMAP blockiert hat

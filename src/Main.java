@@ -4,13 +4,16 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        EmailService service;
         StorageService storage = new StorageService();
+        EmailService service;
+        showLogo();
+        int id = -1;
+        if(storage.checkIfCredentialsSaved()) {
 
-        if(new File("email.properties").exists()) {
+            id = storage.selectAccount();
 
             String[] credentials;
-            credentials = storage.loadCredentials();
+            credentials = storage.loadCredentials(id);
 
             String email = credentials[0];
             String password = credentials[1];
@@ -19,7 +22,7 @@ public class Main {
 
             if (!service.validateLogin()) {
                 System.out.println("Credentials are incorrect.");
-                storage.deleteCredentials();
+                storage.deleteCredentials(storage.findAccountId(email));
                 return;
             }
         } else {
@@ -51,7 +54,7 @@ public class Main {
         System.out.println("Logged in successfully.");
         System.out.println("Welcome back " + service.getEmail());
         //Main Menu aufrufen
-        ConsoleUI ui = new ConsoleUI(service);
+        ConsoleUI ui = new ConsoleUI(service, id);
         ui.showMenu();
 
         //Logout
@@ -68,6 +71,25 @@ public class Main {
     public static boolean isValidEmail(String email) {
         if(email.isEmpty()) return false;
         if(!email.contains("@")) return false;
-        return email.endsWith("@gmail.com");
+        if (EmailService.getProviderConfig(email, true) == null) return false;
+        return true;
     }
+
+    /**
+     * Zeigt das ASCII-Art Logo von ConsoleMail an
+     */
+    public static void showLogo() {
+        System.out.println("  ______                                           __            __       __            __  __ ");
+        System.out.println(" /      \\                                         |  \\          |  \\     /  \\          |  \\|  \\");
+        System.out.println("|  $$$$$$\\  ______   _______    _______   ______  | $$  ______  | $$\\   /  $$  ______   \\$$| $$");
+        System.out.println("| $$   \\$$ /      \\ |       \\  /       \\ /      \\ | $$ /      \\ | $$$\\ /  $$$ |      \\ |  \\| $$");
+        System.out.println("| $$      |  $$$$$$\\| $$$$$$$\\|  $$$$$$$|  $$$$$$\\| $$|  $$$$$$\\| $$$$\\  $$$$  \\$$$$$$\\| $$| $$");
+        System.out.println("| $$   __ | $$  | $$| $$  | $$ \\$$    \\ | $$  | $$| $$| $$    $$| $$\\$$ $$ $$ /      $$| $$| $$");
+        System.out.println("| $$__/  \\| $$__/ $$| $$  | $$ _\\$$$$$$\\| $$__/ $$| $$| $$$$$$$$| $$ \\$$$| $$|  $$$$$$$| $$| $$");
+        System.out.println(" \\$$    $$ \\$$    $$| $$  | $$|       $$ \\$$    $$| $$ \\$$     \\| $$  \\$ | $$ \\$$    $$| $$| $$");
+        System.out.println("  \\$$$$$$   \\$$$$$$  \\$$   \\$$ \\$$$$$$$   \\$$$$$$  \\$$  \\$$$$$$$ \\$$      \\$$  \\$$$$$$$ \\$$ \\$$");
+        System.out.println();
+        System.out.println();
+    }
+
 }

@@ -8,8 +8,10 @@ import java.text.SimpleDateFormat;
 public class ConsoleUI {
     private final EmailService emailService;
     private final Scanner input;
+    private final int id;
     private Message[] messages;
     private int maxEmails = 10;
+    private boolean running = true;
     private String signature = "Gesendet mit ConsoleMail";
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     StorageService storage = new StorageService();
@@ -18,17 +20,18 @@ public class ConsoleUI {
      * Vorbereitung (E-Mails werden schon mal vorab gefetcht)
      * @param emailService wird für this.emailService gebraucht
      */
-    public ConsoleUI(EmailService emailService) {
+    public ConsoleUI(EmailService emailService, int id) {
         this.emailService = emailService;
         this.input = new Scanner(System.in);
         this.messages = emailService.fetchEmail(maxEmails);
+        this.id = id;
     }
 
     /**
      * Regelt den Fehler, falls kein Int angegeben wird
      * @return Input in Int oder -1 wenn keine Zahl
      */
-    private int getIntInput(){
+    public int getIntInput(){
         try{
             return Integer.parseInt(input.nextLine());
         } catch(NumberFormatException e){
@@ -40,16 +43,16 @@ public class ConsoleUI {
      * Das Hauptmenü der Programms
      */
     public void showMenu() {
-        boolean running = true;
         while (running) {
 
             System.out.println("You have " + messages.length + " messages");
             System.out.println("Please enter your choice: ");
             System.out.println("1. Send a Message");
             System.out.println("2. See Inbox");
-            System.out.println("3. Settings");
-            System.out.println("4. Exit");
-            System.out.println("5. Logout");
+            System.out.println("3. Account");
+            System.out.println("4. Settings");
+            System.out.println("5. Exit");
+            System.out.println("6. Logout");
             int choice = getIntInput();
             switch (choice) {
                 case 1:
@@ -59,13 +62,16 @@ public class ConsoleUI {
                     showInbox();
                     break;
                 case 3:
-                    settings();
+                    account();
                     break;
                 case 4:
-                    running = false;
+                    settings();
                     break;
                 case 5:
-                    storage.deleteCredentials();
+                    running = false;
+                    break;
+                case 6:
+                    storage.deleteCredentials(id);
                     running = false;
                     break;
                 default:
@@ -148,6 +154,30 @@ public class ConsoleUI {
 
         emailService.sendEmail(to, subject, body);
 
+    }
+
+    public void account() {
+        System.out.println("1. Show Account");
+        System.out.println("2. Change Account");
+        System.out.println("3. Logout");
+        int choice = getIntInput();
+
+        switch (choice) {
+            case 1:
+                System.out.println(emailService.getEmail());
+                break;
+            case 2:
+                running = false;
+
+                break;
+            case 3:
+                storage.deleteCredentials(id);
+                running = false;
+                break;
+            default:
+                System.out.println("Invalid choice.");
+                break;
+        }
     }
 
     /**

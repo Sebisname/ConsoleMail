@@ -54,10 +54,11 @@ public class EmailService {
      */
     private Properties getSmtpProps() {
         Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.port", "587");
+        String[] config = getProviderConfig(email,false);
+        props.put("mail.smtp.host", config[0]);
+        props.put("mail.smtp.auth", config[1]);
+        props.put("mail.smtp.starttls.enable", config[2]);
+        props.put("mail.smtp.port", config[3]);
         return props;
     }
 
@@ -68,10 +69,48 @@ public class EmailService {
      */
     private Properties getImapProps() {
         Properties props = new Properties();
-        props.put("mail.imap.host", "imap.gmail.com");
-        props.put("mail.imap.port", "993");
-        props.put("mail.imap.ssl.enable", "true");
+        String[] config = getProviderConfig(email,true);
+        props.put("mail.imap.host", config[0]);
+        props.put("mail.imap.port", config[1]);
+        props.put("mail.imap.ssl.enable", config[2]);
         return props;
+    }
+
+    /**
+     * Um die richtige Config für den richtigen Anbieter zu bekommen
+     * @param email wählt den richtigen anbieter
+     * @param imap damit man zwischen imap und smtp entscheiden kann
+     * @return Config
+     */
+    public static String[] getProviderConfig(String email, boolean imap) {
+        switch (email.substring(email.indexOf('@'))) {
+            case "@gmail.com":
+                if(imap){
+                    return new String[]{"imap.gmail.com","993","true"};
+                } else {
+                    return new String[]{"smtp.gmail.com","true","true","587"};
+                }
+            case "@outlook.com":
+                if(imap){
+                    return new String[]{"outlook.office365.com","993","true"};
+                } else {
+                    return new String[]{"smtp.office365.com","true","true","587"};
+                }
+            case "@icloud.com":
+                if(imap){
+                    return new String[]{"imap.mail.me.com","993","true"};
+                } else {
+                    return new String[]{"smtp.mail.me.com","true","true","587"};
+                }
+            case "@gmx.at":
+                if(imap){
+                    return new String[]{"imap.gmx.net","993","true"};
+                } else {
+                    return new String[]{"mail.gmx.net","true","true","587"};
+                }
+            default:
+                return null;
+        }
     }
 
     /**
