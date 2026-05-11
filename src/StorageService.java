@@ -86,7 +86,7 @@ public class StorageService {
     }
 
     /**
-     *
+     * Sucht nach der ID mithilfe der E-mail
      * @param email to search
      * @return
      */
@@ -100,7 +100,7 @@ public class StorageService {
     }
 
     /**
-     *
+     * Listet alle Dateinamen von allen Properties Files
      * @return ein Array mit allen Properties Datein
      */
     private String[] listPropFiles() {
@@ -173,7 +173,7 @@ public class StorageService {
     }
 
     /**
-     *
+     * Um den Account zu wechseln, während man noch eingeloggt ist
      */
     public void changeAccount(){
         System.out.println("Change Account to:");
