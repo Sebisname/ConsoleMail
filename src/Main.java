@@ -1,4 +1,3 @@
-import java.io.File;
 import java.util.Scanner;
 
 public class Main {
@@ -71,12 +70,11 @@ public class Main {
     public static boolean isValidEmail(String email) {
         if(email.isEmpty()) return false;
         if(!email.contains("@")) return false;
-        if (EmailService.getProviderConfig(email, true) == null) return false;
-        return true;
+        return EmailService.getProviderConfig(email, true) != null;
     }
 
     /**
-     * Zeigt das ASCII-Art Logo von ConsoleMail an
+     * Zeigt das ASCII-Art-Logo von ConsoleMail an
      */
     public static void showLogo() {
         System.out.println("  ______                                           __            __       __            __  __ ");
