@@ -145,7 +145,7 @@ public class StorageService {
     }
 
     /**
-     *
+     * Menü zum auswählen von allen gespeicherten Accounts
      * @return Id vom ausgewählten Account
      */
     public int selectAccount() {
