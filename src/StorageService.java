@@ -188,5 +188,6 @@ public class StorageService {
         String email = credentials[0];
         String password = credentials[1];
         emailService = new EmailService(email, password);
+        System.out.println("Changed Account Sucsessfully Account to: "+email);
     }
 }
