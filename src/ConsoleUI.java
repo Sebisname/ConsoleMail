@@ -32,7 +32,7 @@ public class ConsoleUI {
     /**
      * Regelt den Fehler, falls kein Int angegeben wird
      *
-     * @return Input in Int oder -1 wenn keine Zahl
+     * @return Input xin Int oder -1 wenn keine Zahl
      */
     public int getIntInput() {
         try {
