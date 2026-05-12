@@ -91,7 +91,7 @@ public class StorageService {
      * Sucht nach der ID mithilfe der E-mail
      *
      * @param email to search
-     * @return
+     * @return Account ID
      */
     public int findAccountId(String email) {
         for (String key : properties.stringPropertyNames()) {
