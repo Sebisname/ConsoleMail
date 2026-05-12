@@ -3,18 +3,18 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class StorageService {
-    Properties properties = new Properties();
     private final Scanner input = new Scanner(System.in);
+    Properties properties = new Properties();
+    EmailService emailService;
     private int accTotal = 0;
 
     public StorageService() {
     }
 
-    EmailService emailService;
-
     /**
      * Abfrage für das Speichern der E-Mail, und Passwort
-     * @param email Email
+     *
+     * @param email    Email
      * @param password Password
      */
     public void askRememberMe(String email, String password) {
@@ -27,7 +27,7 @@ public class StorageService {
         }
         switch (answer) {
             case "j":
-                saveCredentials(email,password);
+                saveCredentials(email, password);
                 break;
             case "n":
                 break;
@@ -38,18 +38,19 @@ public class StorageService {
 
     /**
      * erstellet E-Mail.properties und speichert dort die E-Mail und das passwort als Property
-     * @param email E-Mail
+     *
+     * @param email    E-Mail
      * @param password User Password
      */
-    public void saveCredentials(String email, String password){
+    public void saveCredentials(String email, String password) {
         // Passwort wird unverschlüsselt gespeichert.
         // Für Produktionscode sollte Verschlüsselung verwendet werden
-        accTotal ++;
+        accTotal++;
         properties.setProperty("id", accTotal + "");
         properties.setProperty("email", email);
         properties.setProperty("password", password);
         try {
-            properties.store(new FileOutputStream("email"+accTotal+".properties"), null);
+            properties.store(new FileOutputStream("email" + accTotal + ".properties"), null);
         } catch (IOException e) {
             System.out.println("Error saving Credentials");
         }
@@ -57,16 +58,17 @@ public class StorageService {
 
     /**
      * Ladet die Credentials aus email.properties
+     *
      * @return {email,password} in einem Array
      */
-    public String[] loadCredentials(int id){
+    public String[] loadCredentials(int id) {
         try {
-            FileInputStream inputStream = new FileInputStream("email"+id+".properties");
+            FileInputStream inputStream = new FileInputStream("email" + id + ".properties");
             properties.load(inputStream);
             String email = properties.getProperty("email");
             String password = properties.getProperty("password");
             inputStream.close();
-            return new String[]{email,password};
+            return new String[]{email, password};
         } catch (IOException e) {
             System.out.println("Error loading Credentials");
             return new String[0];
@@ -77,23 +79,24 @@ public class StorageService {
      * Löscht die Credentials zum Abmelden
      */
     public void deleteCredentials(int id) {
-        boolean delete = new File("email"+id+".properties").delete();
+        boolean delete = new File("email" + id + ".properties").delete();
         if (!delete) {
             System.out.println("Error deleting Credentials");
-        } else  {
+        } else {
             System.out.println("Successfully Logged out");
         }
     }
 
     /**
      * Sucht nach der ID mithilfe der E-mail
+     *
      * @param email to search
      * @return
      */
     public int findAccountId(String email) {
         for (String key : properties.stringPropertyNames()) {
             if (key.equals("email") && properties.getProperty(key).equals(email)) {
-                return  Integer.parseInt(properties.getProperty("id"));
+                return Integer.parseInt(properties.getProperty("id"));
             }
         }
         return -1;
@@ -101,6 +104,7 @@ public class StorageService {
 
     /**
      * Listet alle Dateinamen von allen Properties Files
+     *
      * @return ein Array mit allen Properties Datein
      */
     private String[] listPropFiles() {
@@ -108,8 +112,8 @@ public class StorageService {
         File[] files = dir.listFiles();
 
         int count = 0;
-        for(File file : files) {
-            if(file.getName().startsWith("email") && file.getName().endsWith(".properties")) {
+        for (File file : files) {
+            if (file.getName().startsWith("email") && file.getName().endsWith(".properties")) {
                 count++;
             }
         }
@@ -117,7 +121,7 @@ public class StorageService {
         String[] propFiles = new String[count];
         int i = 0;
         for (File file : files) {
-            if (file.getName().startsWith("email") && file.getName().endsWith(".properties")){
+            if (file.getName().startsWith("email") && file.getName().endsWith(".properties")) {
                 propFiles[i] = file.getName();
                 i++;
             }
@@ -132,13 +136,13 @@ public class StorageService {
     private void getAllAccounts() {
         String[] propFiles = listPropFiles();
         int i = 1;
-        for(String propFile : propFiles) {
+        for (String propFile : propFiles) {
             Properties temp = new Properties();
             try (FileInputStream stream = new FileInputStream(propFile)) {
                 temp.load(stream);
-                System.out.println(i+". "+temp.getProperty("email"));
+                System.out.println(i + ". " + temp.getProperty("email"));
             } catch (IOException e) {
-                System.out.println("Error listing Accounts: "+e.getMessage());
+                System.out.println("Error listing Accounts: " + e.getMessage());
             }
             i++;
         }
@@ -146,6 +150,7 @@ public class StorageService {
 
     /**
      * Menü zum Auswählen von allen gespeicherten Accounts
+     *
      * @return Id vom ausgewählten Account
      */
     public int selectAccount() {
@@ -153,7 +158,7 @@ public class StorageService {
         getAllAccounts();
         Properties temp = new Properties();
         int choice = Integer.parseInt(input.nextLine());
-        try (FileInputStream stream = new FileInputStream("email"+choice+".properties")) {
+        try (FileInputStream stream = new FileInputStream("email" + choice + ".properties")) {
             temp.load(stream);
             return Integer.parseInt(temp.getProperty("id"));
         } catch (FileNotFoundException e) {
@@ -166,6 +171,7 @@ public class StorageService {
 
     /**
      * Prüft ob Properties Files existieren
+     *
      * @return true/false ob Prop Files existieren
      */
     public boolean checkIfCredentialsSaved() {
@@ -175,7 +181,7 @@ public class StorageService {
     /**
      * Um den Account zu wechseln, während man noch eingeloggt ist
      */
-    public void changeAccount(){
+    public void changeAccount() {
         System.out.println("Change Account to:");
         int id = selectAccount();
         String[] credentials = loadCredentials(id);

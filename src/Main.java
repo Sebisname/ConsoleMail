@@ -7,7 +7,7 @@ public class Main {
         EmailService service;
         showLogo();
         int id = -1;
-        if(storage.checkIfCredentialsSaved()) {
+        if (storage.checkIfCredentialsSaved()) {
 
             id = storage.selectAccount();
 
@@ -46,7 +46,7 @@ public class Main {
                 return;
             }
 
-            storage.askRememberMe(email,password);
+            storage.askRememberMe(email, password);
         }
 
 
@@ -68,9 +68,9 @@ public class Main {
      * @return true/false je nachdem ob es eine Valide Adresse ist
      */
     public static boolean isValidEmail(String email) {
-        if(email.isEmpty()) return false;
-        if(!email.contains("@")) return false;
-        return EmailService.getProviderConfig(email, true) != null;
+        if (email.isEmpty()) return false;
+        if (!email.contains("@")) return false;
+        return EmailService.getProviderConfig(email) != null;
     }
 
     /**

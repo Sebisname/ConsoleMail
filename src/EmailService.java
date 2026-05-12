@@ -1,17 +1,20 @@
 import jakarta.mail.*;
-import jakarta.mail.internet.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+
 import java.util.Properties;
 
 public class EmailService {
 
-    private String email;
-    private String password;
+    private final String email;
+    private final String password;
     private Store store;
     private Folder inbox;
 
     /**
      * Erstellt einen neuen EmailService
-     * @param email Die Gmail-Adresse des Benutzers
+     *
+     * @param email    Die Gmail-Adresse des Benutzers
      * @param password Das App-Passwort des Benutzers
      */
     public EmailService(String email, String password) {
@@ -20,7 +23,29 @@ public class EmailService {
     }
 
     /**
+     * Um die richtige Config für den richtigen Anbieter zu bekommen
+     *
+     * @param email wählt den richtigen anbieter
+     * @return Config
+     */
+    public static String[][] getProviderConfig(String email) {
+        switch (email.substring(email.indexOf('@'))) {
+            case "@gmail.com":
+                    return new String[][]{{"imap.gmail.com", "993", "true"},{"smtp.gmail.com", "true", "true", "587"}};
+            case "@outlook.com":
+                    return new String[][]{{"outlook.office365.com", "993", "true"},{"smtp.office365.com", "true", "true", "587"}};
+            case "@icloud.com":
+                    return new String[][]{{"imap.mail.me.com", "993", "true"},{"smtp.mail.me.com", "true", "true", "587"}};
+            case "@gmx.at":
+                    return new String[][]{{"imap.gmx.net", "993", "true"},{"mail.gmx.net", "true", "true", "587"}};
+            default:
+                return null;
+        }
+    }
+
+    /**
      * Methode für die E-Mail (um DRY zu bleiben, weil oft verwendet)
+     *
      * @return email
      */
     public String getEmail() {
@@ -29,6 +54,7 @@ public class EmailService {
 
     /**
      * Überprüft, ob die Zugangsdaten korrekt sind
+     *
      * @return true wenn erfolgreich, false wenn fehlgeschlagen
      */
     public boolean validateLogin() {
@@ -50,74 +76,39 @@ public class EmailService {
     /**
      * Um SMTP Props zu kriegen,
      * für sendEmail
+     *
      * @return props um alle Properties
      */
     private Properties getSmtpProps() {
         Properties props = new Properties();
-        String[] config = getProviderConfig(email,false);
-        props.put("mail.smtp.host", config[0]);
-        props.put("mail.smtp.auth", config[1]);
-        props.put("mail.smtp.starttls.enable", config[2]);
-        props.put("mail.smtp.port", config[3]);
+        String[][] config = getProviderConfig(email);
+        props.put("mail.smtp.host", config[1][0]);
+        props.put("mail.smtp.auth", config[1][1]);
+        props.put("mail.smtp.starttls.enable", config[1][2]);
+        props.put("mail.smtp.port", config[1][3]);
         return props;
     }
 
     /**
      * Um IMAP Props zu kriegen,
      * für fetchEmail
+     *
      * @return props um alle Properties
      */
     private Properties getImapProps() {
         Properties props = new Properties();
-        String[] config = getProviderConfig(email,true);
-        props.put("mail.imap.host", config[0]);
-        props.put("mail.imap.port", config[1]);
-        props.put("mail.imap.ssl.enable", config[2]);
+        String[][] config = getProviderConfig(email);
+        props.put("mail.imap.host", config[0][0]);
+        props.put("mail.imap.port", config[0][1]);
+        props.put("mail.imap.ssl.enable", config[0][2]);
         return props;
-    }
-
-    /**
-     * Um die richtige Config für den richtigen Anbieter zu bekommen
-     * @param email wählt den richtigen anbieter
-     * @param imap damit man zwischen imap und smtp entscheiden kann
-     * @return Config
-     */
-    public static String[] getProviderConfig(String email, boolean imap) {
-        switch (email.substring(email.indexOf('@'))) {
-            case "@gmail.com":
-                if(imap){
-                    return new String[]{"imap.gmail.com","993","true"};
-                } else {
-                    return new String[]{"smtp.gmail.com","true","true","587"};
-                }
-            case "@outlook.com":
-                if(imap){
-                    return new String[]{"outlook.office365.com","993","true"};
-                } else {
-                    return new String[]{"smtp.office365.com","true","true","587"};
-                }
-            case "@icloud.com":
-                if(imap){
-                    return new String[]{"imap.mail.me.com","993","true"};
-                } else {
-                    return new String[]{"smtp.mail.me.com","true","true","587"};
-                }
-            case "@gmx.at":
-                if(imap){
-                    return new String[]{"imap.gmx.net","993","true"};
-                } else {
-                    return new String[]{"mail.gmx.net","true","true","587"};
-                }
-            default:
-                return null;
-        }
     }
 
     /**
      * Methode um E-Mails zu versenden
      * (verwendet SMTP Props)
      *
-     * @param to Empfänger
+     * @param to      Empfänger
      * @param subject Betreff
      * @param content Inhalt der Email
      */
@@ -141,7 +132,7 @@ public class EmailService {
             Transport.send(message);
             System.out.println("Sent message successfully....");
         } catch (MessagingException e) {
-            System.out.println("Email service failed to send email: "+e.getMessage());
+            System.out.println("Email service failed to send email: " + e.getMessage());
         }
 
 
@@ -150,9 +141,10 @@ public class EmailService {
     /**
      * Probiert mir den IAMP Props alle E-Mails abzurufen
      * (falls fehlschlägt wird nichts zurückgegeben)
+     *
      * @return messages
      */
-    public Message[] fetchEmail(int maxEmails){
+    public Message[] fetchEmail(int maxEmails) {
         Properties props = getImapProps();
 
         //Session erstellen
@@ -172,12 +164,12 @@ public class EmailService {
 
             int total = inbox.getMessageCount();
             //Letzten 10 Email in Array (Alle wären zu viel)
-            Message[] messages = inbox.getMessages(total -(maxEmails-1),total);
+            Message[] messages = inbox.getMessages(total - (maxEmails - 1), total);
 
             return messages;
 
         } catch (MessagingException e) {
-            System.out.println("Email service failed to fetch email: "+e.getMessage());
+            System.out.println("Email service failed to fetch email: " + e.getMessage());
             return new Message[0];
         }
     }
@@ -190,7 +182,7 @@ public class EmailService {
             store.close();
             inbox.close(true);
         } catch (MessagingException e) {
-            System.out.println("Email service failed to close email: "+e.getMessage());
+            System.out.println("Email service failed to close email: " + e.getMessage());
         }
     }
 }

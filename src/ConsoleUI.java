@@ -1,23 +1,25 @@
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMultipart;
+
 import java.io.IOException;
-import java.util.Scanner;
 import java.text.SimpleDateFormat;
+import java.util.Scanner;
 
 public class ConsoleUI {
     private final EmailService emailService;
     private final Scanner input;
     private final int id;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    StorageService storage = new StorageService();
     private Message[] messages;
     private int maxEmails = 10;
     private boolean running = true;
     private String signature = "Gesendet mit ConsoleMail";
-    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-    StorageService storage = new StorageService();
 
     /**
      * Vorbereitung (E-Mails werden schon mal vorab gefetcht)
+     *
      * @param emailService wird für this.emailService gebraucht
      */
     public ConsoleUI(EmailService emailService, int id) {
@@ -29,12 +31,13 @@ public class ConsoleUI {
 
     /**
      * Regelt den Fehler, falls kein Int angegeben wird
+     *
      * @return Input in Int oder -1 wenn keine Zahl
      */
-    public int getIntInput(){
-        try{
+    public int getIntInput() {
+        try {
             return Integer.parseInt(input.nextLine());
-        } catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return -1;
         }
     }
@@ -90,23 +93,23 @@ public class ConsoleUI {
         messages = emailService.fetchEmail(maxEmails);
         try {
             for (int i = 0; i < messages.length; i++) {
-                System.out.println("Message "+(i+1)+": ");
-                System.out.println("From:"+ messages[i].getFrom()[0].toString());
-                System.out.println("Subject"+ messages[i].getSubject());
+                System.out.println("Message " + (i + 1) + ": ");
+                System.out.println("From:" + messages[i].getFrom()[0].toString());
+                System.out.println("Subject" + messages[i].getSubject());
                 System.out.println(sdf.format(messages[i].getSentDate()));
-                System.out.println("Press "+(i+1)+" to read");
+                System.out.println("Press " + (i + 1) + " to read");
 
             }
-            } catch (MessagingException e) {
+        } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
         System.out.println("Please enter the Email you want to read ");
         System.out.println("(Press 0 to exit to the Main Menu)");
         int choice = getIntInput();
 
-        if(choice == 0) {
+        if (choice == 0) {
             showMenu();
-        } else if(choice >= 1 && choice <= messages.length) {
+        } else if (choice >= 1 && choice <= messages.length) {
             showEmail(messages[choice - 1]);
         } else {
             System.out.println("Invalid choice.");
@@ -115,6 +118,7 @@ public class ConsoleUI {
 
     /**
      * Zeigt ausgewählte E-Mail
+     *
      * @param message Ausgewählte E-Mail
      */
     public void showEmail(Message message) {
@@ -125,15 +129,15 @@ public class ConsoleUI {
 
             Object content = message.getContent();
 
-            if(content instanceof String) {
+            if (content instanceof String) {
                 System.out.println("Content: " + content);
-            } else if(content instanceof MimeMultipart multipart) {
+            } else if (content instanceof MimeMultipart multipart) {
 
                 System.out.println("Content: " + multipart.getBodyPart(0).getContent().toString());
             }
 
         } catch (MessagingException | IOException e) {
-            System.out.println("Error (Failed to read): "+e.getMessage());
+            System.out.println("Error (Failed to read): " + e.getMessage());
         }
 
     }
@@ -189,8 +193,8 @@ public class ConsoleUI {
     public void settings() {
         System.out.println("Settings:");
         System.out.println("0. to Exit");
-        System.out.println("1. Max Emails shown: "+maxEmails);
-        System.out.println("2. Edit Signature: "+signature);
+        System.out.println("1. Max Emails shown: " + maxEmails);
+        System.out.println("2. Edit Signature: " + signature);
         System.out.println("Please enter the Number of the Setting you want to edit:");
         int choice = getIntInput();
 
