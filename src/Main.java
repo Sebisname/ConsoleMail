@@ -26,8 +26,6 @@ public class Main {
             }
         } else {
 
-            //Login
-
             System.out.print("Enter your Email: ");
             String email = input.nextLine();
 
