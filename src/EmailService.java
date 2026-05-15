@@ -144,7 +144,7 @@ public class EmailService {
      *
      * @return messages
      */
-    public Message[] fetchEmail(int maxEmails) {
+    public Message[] fetchEmail() {
         Properties props = getImapProps();
 
         //Session erstellen
@@ -163,8 +163,7 @@ public class EmailService {
             inbox.open(Folder.READ_WRITE);
 
             int total = inbox.getMessageCount();
-            //Letzten 10 Email in Array (Alle wären zu viel)
-            Message[] messages = inbox.getMessages(total - (maxEmails - 1), total);
+            Message[] messages = inbox.getMessages();
 
             return messages;
 

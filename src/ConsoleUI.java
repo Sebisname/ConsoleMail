@@ -10,10 +10,11 @@ public class ConsoleUI {
     private final EmailService emailService;
     private final Scanner input;
     private final int id;
+    private int currentPage = 0;
+    private int emailsPerPage = 10;
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     StorageService storage = new StorageService();
     private Message[] messages;
-    private int maxEmails = 10;
     private boolean running = true;
     private String signature = "Gesendet mit ConsoleMail";
 
@@ -25,7 +26,7 @@ public class ConsoleUI {
     public ConsoleUI(EmailService emailService, int id) {
         this.emailService = emailService;
         this.input = new Scanner(System.in);
-        this.messages = emailService.fetchEmail(maxEmails);
+        this.messages = emailService.fetchEmail();
         this.id = id;
     }
 
@@ -90,9 +91,12 @@ public class ConsoleUI {
      * Wird verwendet, um die Inbox anzuzeigen
      */
     public void showInbox() {
-        messages = emailService.fetchEmail(maxEmails);
+        messages = emailService.fetchEmail();
         try {
-            for (int i = 0; i < messages.length; i++) {
+            int start = currentPage * emailsPerPage;
+            int end = Math.min(start + emailsPerPage, messages.length);
+
+            for (int i = start; i < end; i++) {
                 System.out.println("Message " + (i + 1) + ": ");
                 System.out.println("From:" + messages[i].getFrom()[0].toString());
                 System.out.println("Subject" + messages[i].getSubject());
@@ -104,16 +108,28 @@ public class ConsoleUI {
             throw new RuntimeException(e);
         }
         System.out.println("Please enter the Email you want to read ");
+        System.out.println("N. Nächste Seite");
+        System.out.println("P. Vorherige Seite");
         System.out.println("(Press 0 to exit to the Main Menu)");
-        int choice = getIntInput();
-
-        if (choice == 0) {
+        String choice = input.nextLine();
+        if (choice.equals("0")) {
             showMenu();
-        } else if (choice >= 1 && choice <= messages.length) {
-            showEmail(messages[choice - 1]);
+        } else if (choice.equalsIgnoreCase("n")) {
+            currentPage++;
+            showInbox();
+        } else if (choice.equalsIgnoreCase("p")) {
+            if (currentPage > 0) {
+                currentPage --;
+                showInbox();
+            }
         } else {
-            System.out.println("Invalid choice.");
+            try {
+                showEmail(messages[Integer.parseInt(choice) - 1]);
+            } catch (NumberFormatException e) {
+                System.out.println("Ungültige Eingabe.");
+            }
         }
+
     }
 
     /**
@@ -193,8 +209,8 @@ public class ConsoleUI {
     public void settings() {
         System.out.println("Settings:");
         System.out.println("0. to Exit");
-        System.out.println("1. Max Emails shown: " + maxEmails);
-        System.out.println("2. Edit Signature: " + signature);
+        System.out.println("1. Edit Signature: " + signature);
+        System.out.println("2. Emails per Page: " + emailsPerPage);
         System.out.println("Please enter the Number of the Setting you want to edit:");
         int choice = getIntInput();
 
@@ -202,13 +218,12 @@ public class ConsoleUI {
             case 0:
                 break;
             case 1:
-                System.out.println("Set new Maximum:");
-                maxEmails = Integer.parseInt(input.nextLine());
-                break;
-            case 2:
                 System.out.println("New Signature:");
                 signature = input.nextLine();
                 break;
+            case 2:
+                System.out.println("Emails per Page:");
+                emailsPerPage = getIntInput();
             default:
                 System.out.println("Invalid choice.");
                 break;
