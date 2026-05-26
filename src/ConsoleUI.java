@@ -191,7 +191,9 @@ public class ConsoleUI {
                 break;
             case 2:
                 //emailService.disconnect();
-                storage.changeAccount();
+                String[] credentials = storage.changeAccount();
+                EmailService emailService = new EmailService(credentials[0], credentials[1]);
+                System.out.println("Changed Account to: "+emailService.getEmail());
                 break;
             case 3:
                 storage.deleteCredentials(id);

@@ -7,6 +7,8 @@ public class StorageService {
     Properties properties = new Properties();
     EmailService emailService;
     private int accTotal = 0;
+    SecurityUtils securityUtils = new SecurityUtils();
+
 
     public StorageService() {
     }
@@ -48,7 +50,7 @@ public class StorageService {
         accTotal++;
         properties.setProperty("id", accTotal + "");
         properties.setProperty("email", email);
-        properties.setProperty("password", password);
+        properties.setProperty("password", securityUtils.encrypt(password));
         try {
             properties.store(new FileOutputStream("email" + accTotal + ".properties"), null);
         } catch (IOException e) {
@@ -67,6 +69,7 @@ public class StorageService {
             properties.load(inputStream);
             String email = properties.getProperty("email");
             String password = properties.getProperty("password");
+            password =  securityUtils.decrypt(password);
             inputStream.close();
             return new String[]{email, password};
         } catch (IOException e) {
@@ -94,6 +97,7 @@ public class StorageService {
      * @return Account ID
      */
     public int findAccountId(String email) {
+
         for (String key : properties.stringPropertyNames()) {
             if (key.equals("email") && properties.getProperty(key).equals(email)) {
                 return Integer.parseInt(properties.getProperty("id"));
@@ -181,13 +185,9 @@ public class StorageService {
     /**
      * Um den Account zu wechseln, während man noch eingeloggt ist
      */
-    public void changeAccount() {
+    public String[] changeAccount() {
         System.out.println("Change Account to:");
         int id = selectAccount();
-        String[] credentials = loadCredentials(id);
-        String email = credentials[0];
-        String password = credentials[1];
-        emailService = new EmailService(email, password);
-        System.out.println("Changed Account Sucsessfully Account to: "+email);
+        return loadCredentials(id);
     }
 }

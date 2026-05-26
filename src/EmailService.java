@@ -58,6 +58,8 @@ public class EmailService {
      * @return true wenn erfolgreich, false wenn fehlgeschlagen
      */
     public boolean validateLogin() {
+        String[][] config = getProviderConfig(email);
+
         try {
             Store testStore = Session.getInstance(getImapProps(), new Authenticator() {
                 @Override
@@ -65,7 +67,8 @@ public class EmailService {
                     return new PasswordAuthentication(email, password);
                 }
             }).getStore("imaps");
-            testStore.connect("imap.gmail.com", email, password);
+
+            testStore.connect(config[0][0], email, password);
             testStore.close();
             return true;
         } catch (MessagingException e) {

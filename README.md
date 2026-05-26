@@ -36,6 +36,19 @@ Folgende JARs herunterladen und in IntelliJ einbinden (`File → Project Structu
 
 ---
 
+## Verschlüsselung einrichten
+
+Das Programm benötigt einen Verschlüsselungsschlüssel.
+
+Setze folgende Umgebungsvariable:
+- Name: CONSOLEMAIL_KEY
+- Wert: beliebige 16 Zeichen (z.B. "Ab3dEf7hIj1kLm5n")
+
+Windows: Systemsteuerung → Umgebungsvariablen → Neu 
+IntelliJ: Run → Edit Configurations → Environment Variables
+
+---
+
 ## Starten
 
 1. Projekt in IntelliJ öffnen
@@ -61,3 +74,4 @@ Folgende JARs herunterladen und in IntelliJ einbinden (`File → Project Structu
 - Passwörter werden unverschlüsselt gespeichert — nur auf vertrauenswürdigen Geräten verwenden
 - Das Passwort wird bei der Eingabe sichtbar angezeigt (Einschränkung der IntelliJ Konsole)
 - Schul- oder Work-Konten funktionieren möglicherweise nicht wenn der Admin IMAP blockiert hat
+- Absätze nur mit `\n`
