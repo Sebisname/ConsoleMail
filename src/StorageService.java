@@ -111,7 +111,7 @@ public class StorageService {
      *
      * @return ein Array mit allen Properties Datein
      */
-    private String[] listPropFiles() {
+    public String[] listPropFiles() {
         File dir = new File(".");
         File[] files = dir.listFiles();
 

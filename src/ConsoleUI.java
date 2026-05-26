@@ -152,6 +152,20 @@ public class ConsoleUI {
                 System.out.println("Content: " + multipart.getBodyPart(0).getContent().toString());
             }
 
+            System.out.println("Please enter a choice");
+            System.out.println("D. Nachricht löschen");
+            System.out.println("(Press 0 to exit to the Main Menu)");
+            String choice = input.nextLine();
+            switch (choice.toLowerCase()) {
+                case "d":
+                    emailService.deleteEmail(message);
+                    break;
+                case "0":
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+
         } catch (MessagingException | IOException e) {
             System.out.println("Error (Failed to read): " + e.getMessage());
         }

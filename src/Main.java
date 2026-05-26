@@ -9,7 +9,12 @@ public class Main {
         int id = -1;
         if (storage.checkIfCredentialsSaved()) {
 
-            id = storage.selectAccount();
+            //Falls nur ein Account gespeichert, wird dieser Automatisch aufgerufen
+            if (storage.listPropFiles().length <= 1) {
+                id = 1;
+            } else {
+                id = storage.selectAccount();
+            }
 
             String[] credentials;
             credentials = storage.loadCredentials(id);
@@ -30,7 +35,7 @@ public class Main {
             String email = input.nextLine();
 
             while (!isValidEmail(email)) {
-                System.out.println("Please enter a valid Gmail Address");
+                System.out.println("Please enter a valid E-mail Address");
                 email = input.nextLine();
             }
 

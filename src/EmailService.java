@@ -141,6 +141,36 @@ public class EmailService {
 
     }
 
+    public void deleteEmail(Message message) {
+
+        Properties props = getImapProps();
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(email, password);
+            }
+        });
+
+        try {
+            message.setFlag(Flags.Flag.DELETED, true);
+
+            if (inbox != null && inbox.isOpen()) {
+                inbox.close(true);
+            }
+            if (store != null && store.isConnected()) {
+                store.close();
+            }
+
+            System.out.println("Email erfolgreich zum Löschen markiert und Ordner bereinigt.");
+
+
+        } catch (MessagingException e){
+            System.out.println("Email service failed to delete email: " + e.getMessage());
+        }
+
+    }
+
+
     /**
      * Probiert mir den IAMP Props alle E-Mails abzurufen
      * (falls fehlschlägt wird nichts zurückgegeben)
