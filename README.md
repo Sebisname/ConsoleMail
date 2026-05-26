@@ -66,6 +66,7 @@ IntelliJ: Run → Edit Configurations → Environment Variables
 - Auto-Login
 - Signatur
 - Einstellbare Anzahl angezeigter Emails
+- Emails löschen
 
 ---
 
