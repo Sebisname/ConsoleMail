@@ -28,7 +28,7 @@ public class SecurityUtils {
             byte[] encrypted = cipher.doFinal(content.getBytes());
             return Base64.getEncoder().encodeToString(encrypted);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error while encrypting: " + e.getMessage());
         }
         return null;
     }
@@ -49,7 +49,7 @@ public class SecurityUtils {
             byte[] decrypted = cipher.doFinal(decoded);
             return new String(decrypted);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error while decrypting: " + e.getMessage());
         }
         return null;
     }

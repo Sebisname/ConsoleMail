@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class StorageService {
     private final Scanner input = new Scanner(System.in);
     Properties properties = new Properties();
-    EmailService emailService;
     private int accTotal = 0;
     SecurityUtils securityUtils = new SecurityUtils();
 
@@ -109,7 +108,7 @@ public class StorageService {
     /**
      * Listet alle Dateinamen von allen Properties Files
      *
-     * @return ein Array mit allen Properties Datein
+     * @return ein Array mit allen Properties Dateien
      */
     public String[] listPropFiles() {
         File dir = new File(".");
@@ -135,7 +134,7 @@ public class StorageService {
     }
 
     /**
-     * Printet alle gespeicherten Accounts
+     * Druckt alle gespeicherten Accounts
      */
     private void getAllAccounts() {
         String[] propFiles = listPropFiles();
