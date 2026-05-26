@@ -141,6 +141,10 @@ public class EmailService {
 
     }
 
+    /**
+     * Löscht eine E-Mail
+     * @param message Message die gelöscht werden soll
+     */
     public void deleteEmail(Message message) {
 
         Properties props = getImapProps();
