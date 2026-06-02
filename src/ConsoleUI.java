@@ -17,6 +17,7 @@ public class ConsoleUI {
     private Message[] messages;
     private boolean running = true;
     private String signature = "Gesendet mit ConsoleMail";
+    private String sortingType = "datum";
 
     /**
      * Vorbereitung (E-Mails werden schon mal vorab gefetcht)
@@ -26,7 +27,7 @@ public class ConsoleUI {
     public ConsoleUI(EmailService emailService, int id) {
         this.emailService = emailService;
         this.input = new Scanner(System.in);
-        this.messages = emailService.fetchEmail();
+        this.messages = emailService.fetchEmail(sortingType);
         this.id = id;
     }
 
@@ -91,7 +92,7 @@ public class ConsoleUI {
      * Wird verwendet, um die Inbox anzuzeigen
      */
     public void showInbox() {
-        messages = emailService.fetchEmail();
+        messages = emailService.fetchEmail(sortingType);
         try {
             int start = currentPage * emailsPerPage;
             int end = Math.min(start + emailsPerPage, messages.length);
@@ -232,6 +233,7 @@ public class ConsoleUI {
         System.out.println("0. to Exit");
         System.out.println("1. Edit Signature: " + signature);
         System.out.println("2. Emails per Page: " + emailsPerPage);
+        System.out.println("3. Sort Type: " + sortingType);
         System.out.println("Please enter the Number of the Setting you want to edit:");
         int choice = getIntInput();
 
@@ -245,6 +247,23 @@ public class ConsoleUI {
             case 2:
                 System.out.println("Emails per Page:");
                 emailsPerPage = getIntInput();
+                break;
+            case 3:
+                System.out.println("Sort Type:");
+                System.out.println("1. Date");
+                System.out.println("2. Name (a-z)");
+                int choice2 = getIntInput();
+                switch (choice2) {
+                    case 1:
+                        sortingType = "datum";
+                        break;
+                    case 2:
+                        sortingType = "name";
+                        break;
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+                break;
             default:
                 System.out.println("Invalid choice.");
                 break;

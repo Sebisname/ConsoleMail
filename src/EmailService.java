@@ -2,6 +2,8 @@ import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Properties;
 
 public class EmailService {
@@ -202,7 +204,7 @@ public class EmailService {
      *
      * @return messages (neueste zuerst)
      */
-    public Message[] fetchEmail() {
+    public Message[] fetchEmail(String sortType) {
         Properties props = getImapProps();
 
         Session session = Session.getInstance(props, new Authenticator() {
@@ -222,12 +224,36 @@ public class EmailService {
 
             Message[] messages = inbox.getMessages();
 
-            Message[] reversedMessages = new Message[messages.length];
-            for (int i = 0; i < messages.length; i++) {
-                reversedMessages[i] = messages[messages.length - 1 - i];
-            }
+            switch (sortType) {
+                case "datum":
+                    Message[] reversedMessages = new Message[messages.length];
+                    for (int i = 0; i < messages.length; i++) {
+                        reversedMessages[i] = messages[messages.length - 1 - i];
+                    }
+                    return reversedMessages;
 
-            return reversedMessages;
+                case "name":
+                    Arrays.sort(messages, new Comparator<Message>() {
+                        @Override
+                        public int compare(Message m1, Message m2) {
+                            try {
+                                Address[] a1 = m1.getFrom();
+                                Address[] a2 = m2.getFrom();
+
+                                String name1 = (a1 != null && a1.length > 0) ? a1[0].toString() : "";
+                                String name2 = (a2 != null && a2.length > 0) ? a2[0].toString() : "";
+
+                                return name1.compareToIgnoreCase(name2);
+                            } catch (MessagingException e) {
+                                return 0;
+                            }
+                        }
+                    });
+                    return messages;
+
+                default:
+                    return messages;
+            }
 
         } catch (MessagingException e) {
             System.out.println("Email service failed to fetch email: " + e.getMessage());
