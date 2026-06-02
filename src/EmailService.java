@@ -174,35 +174,60 @@ public class EmailService {
 
     }
 
+    /**
+     * Direkt auf E-Mail antworten
+     * @param original E-Mail auf die geantwortet wird
+     * @param replyText Antwort Text
+     */
+    public void replyEmail(Message original, String replyText) {
+
+        try {
+            MimeMessage reply =  (MimeMessage) original.reply(false);
+
+            reply.setFrom(new InternetAddress(email));
+
+            String alterInhalt = original.getContent().toString();
+            reply.setText(replyText + "\n\n--- Ursprüngliche Nachricht ---\n" + alterInhalt);
+            Transport.send(reply);
+            System.out.println("Sent message successfully....");
+
+        } catch (Exception e) {
+            System.out.println("Email service failed to reply to email: " + e.getMessage());
+        }
+    }
+
 
     /**
-     * Probiert mir den IAMP Props alle E-Mails abzurufen
-     * (falls fehlschlägt wird nichts zurückgegeben)
+     * Holt alle E-Mails ab, wobei die neuesten E-Mails zuerst im Array stehen.
      *
-     * @return messages
+     * @return messages (neueste zuerst)
      */
     public Message[] fetchEmail() {
         Properties props = getImapProps();
 
-        //Session erstellen
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(email, password);
             }
         });
-        try {
 
+        try {
             store = session.getStore("imaps");
-            store.connect("imap.gmail.com", email, password);
+            String[][] config = getProviderConfig(email);
+            store.connect(config[0][0], email, password);
 
             inbox = store.getFolder("INBOX");
             inbox.open(Folder.READ_WRITE);
 
-            int total = inbox.getMessageCount();
             Message[] messages = inbox.getMessages();
 
-            return messages;
+            Message[] reversedMessages = new Message[messages.length];
+            for (int i = 0; i < messages.length; i++) {
+                reversedMessages[i] = messages[messages.length - 1 - i];
+            }
+
+            return reversedMessages;
 
         } catch (MessagingException e) {
             System.out.println("Email service failed to fetch email: " + e.getMessage());

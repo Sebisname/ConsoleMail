@@ -153,6 +153,7 @@ public class ConsoleUI {
             }
 
             System.out.println("Please enter a choice");
+            System.out.println("A. Antworten");
             System.out.println("D. Nachricht löschen");
             System.out.println("(Press 0 to exit to the Main Menu)");
             String choice = input.nextLine();
@@ -160,6 +161,10 @@ public class ConsoleUI {
                 case "d":
                     emailService.deleteEmail(message);
                     break;
+                case "a":
+                    System.out.println("Bitte Antwort Text eingeben");
+                    String replyText = input.nextLine();
+                    emailService.replyEmail(message, replyText);
                 case "0":
                     break;
                 default:
