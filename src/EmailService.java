@@ -39,7 +39,33 @@ public class EmailService {
             case "@icloud.com":
                     return new String[][]{{"imap.mail.me.com", "993", "true"},{"smtp.mail.me.com", "true", "true", "587"}};
             case "@gmx.at":
-                    return new String[][]{{"imap.gmx.net", "993", "true"},{"mail.gmx.net", "true", "true", "587"}};
+            case "@gmx.de":
+            case "@gmx.net":
+            case "@gmx.ch":
+                return new String[][]{{"imap.gmx.net", "993", "true"},{"mail.gmx.net", "true", "true", "587"}};
+
+            // Web.de
+            case "@web.de":
+                return new String[][]{{"imap.web.de", "993", "true"},{"smtp.web.de", "true", "true", "587"}};
+
+            // A1 Telekom (Österreich)
+            case "@aon.at":
+            case "@a1.net":
+                return new String[][]{{"securemail.a1.net", "993", "true"},{"securemail.a1.net", "true", "true", "587"}};
+
+            // Magenta / Ex-UPC / Chello (Österreich)
+            case "@chello.at":
+            case "@magenta.at":
+            case "@upcmail.at":
+            case "@inode.at":
+                return new String[][]{{"mail.magenta.at", "993", "true"},{"mail.magenta.at", "true", "true", "587"}};
+
+            // Yahoo Mail
+            case "@yahoo.com":
+            case "@yahoo.de":
+            case "@yahoo.at":
+                return new String[][]{{"imap.mail.yahoo.com", "993", "true"},{"smtp.mail.yahoo.com", "true", "true", "587"}};
+
             default:
                 return null;
         }
