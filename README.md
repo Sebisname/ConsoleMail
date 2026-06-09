@@ -86,7 +86,6 @@ IntelliJ: Run → Edit Configurations → Environment Variables
 
 ## Hinweise
 
-- Passwörter werden unverschlüsselt gespeichert — nur auf vertrauenswürdigen Geräten verwenden
 - Das Passwort wird bei der Eingabe sichtbar angezeigt (Einschränkung der IntelliJ Konsole)
 - Schul- oder Work-Konten funktionieren möglicherweise nicht wenn der Admin IMAP blockiert hat
 - Absätze nur mit `\n`
