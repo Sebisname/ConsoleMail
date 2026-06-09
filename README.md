@@ -1,7 +1,7 @@
 # ConsoleMail
 
 Ein einfacher E-Mail-Client der vollständig in der Konsole läuft.
-Unterstützt Gmail, Outlook, GMX und iCloud.
+Unterstützt eine Vielzahl von gängigen E-Mail-Anbietern wie Gmail, Outlook, iCloud, GMX, Web.de, Yahoo sowie österreichische Provider (A1, Magenta).
 
 ---
 
@@ -21,18 +21,32 @@ Folgende JARs herunterladen und in IntelliJ einbinden (`File → Project Structu
 3. IMAP aktivieren: Gmail → Einstellungen → Alle Einstellungen → `Weiterleitung und POP/IMAP → IMAP aktivieren`
 4. Login: Gmail-Adresse + App-Passwort
 
-### Outlook
+### Outlook / Hotmail / Live
 1. IMAP aktivieren: `outlook.com → Einstellungen → Mail → Sync Email → POP und IMAP → IMAP aktivieren`
 2. Login: Outlook-Adresse + normales Passwort
 
-### GMX
-1. IMAP aktivieren: `gmx.at → Einstellungen → E-Mail → Postfach → POP3/IMAP Abruf → IMAP aktivieren`
-2. Login: GMX-Adresse + normales Passwort
-
-### iCloud
+### iCloud / Me / Mac
 1. 2-Faktor-Authentifizierung aktivieren: `appleid.apple.com → Sicherheit`
 2. App-Passwort erstellen: `appleid.apple.com → Anmeldung und Sicherheit → App-Passwörter`
 3. Login: iCloud-Adresse + App-Passwort
+
+### GMX
+1. IMAP aktivieren: `gmx.at` / `gmx.de` → Einstellungen → E-Mail → Postfach → POP3/IMAP Abruf → IMAP aktivieren
+2. Login: GMX-Adresse + normales Passwort
+
+### Web.de
+1. IMAP aktivieren: `web.de` → Einstellungen → Zu den Einstellungen → POP3/IMAP Abruf → Aktivieren
+2. Login: Web.de-Adresse + normales Passwort
+
+### Yahoo Mail
+1. App-Passwort erstellen: `login.yahoo.com` → Account-Sicherheit → App-Passwort generieren
+2. Login: Yahoo-Adresse + App-Passwort
+
+### A1 Telekom (aon.at / a1.net)
+1. Login: A1-E-Mail-Adresse + normales Passwort (Voraussetzung: IMAP-Abruf ist im A1-Webmail freigeschaltet)
+
+### Magenta / Chello / UPC / Inode
+1. Login: Magenta-E-Mail-Adresse + normales Passwort
 
 ---
 
@@ -44,7 +58,7 @@ Setze folgende Umgebungsvariable:
 - Name: CONSOLEMAIL_KEY
 - Wert: beliebige 16 Zeichen (z.B. "Ab3dEf7hIj1kLm5n")
 
-Windows: Systemsteuerung → Umgebungsvariablen → Neu 
+Windows: Systemsteuerung → Umgebungsvariablen → Neu
 IntelliJ: Run → Edit Configurations → Environment Variables
 
 ---
