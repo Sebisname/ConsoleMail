@@ -31,13 +31,31 @@ public class EmailService {
      * @return Config
      */
     public static String[][] getProviderConfig(String email) {
-        switch (email.substring(email.indexOf('@'))) {
+        if (email == null || !email.contains("@")) {
+            return null;
+        }
+
+        switch (email.substring(email.indexOf('@')).toLowerCase()) {
+            // Google Mail
             case "@gmail.com":
-                    return new String[][]{{"imap.gmail.com", "993", "true"},{"smtp.gmail.com", "true", "true", "587"}};
+            case "@googlemail.com":
+                return new String[][]{{"imap.gmail.com", "993", "true"},{"smtp.gmail.com", "true", "true", "587"}};
+
+            // Microsoft
             case "@outlook.com":
-                    return new String[][]{{"outlook.office365.com", "993", "true"},{"smtp.office365.com", "true", "true", "587"}};
+            case "@hotmail.com":
+            case "@hotmail.de":
+            case "@live.com":
+            case "@live.de":
+                return new String[][]{{"outlook.office365.com", "993", "true"},{"smtp.office365.com", "true", "true", "587"}};
+
+            // Apple
             case "@icloud.com":
-                    return new String[][]{{"imap.mail.me.com", "993", "true"},{"smtp.mail.me.com", "true", "true", "587"}};
+            case "@me.com":
+            case "@mac.com":
+                return new String[][]{{"imap.mail.me.com", "993", "true"},{"smtp.mail.me.com", "true", "true", "587"}};
+
+            // GMX (Österreich & Deutschland)
             case "@gmx.at":
             case "@gmx.de":
             case "@gmx.net":
