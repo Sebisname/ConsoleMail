@@ -80,16 +80,18 @@ public class Main {
      * Zeigt das ASCII-Art-Logo von ConsoleMail an
      */
     public static void showLogo() {
-        System.out.println("  ______                                           __            __       __            __  __ ");
-        System.out.println(" /      \\                                         |  \\          |  \\     /  \\          |  \\|  \\");
-        System.out.println("|  $$$$$$\\  ______   _______    _______   ______  | $$  ______  | $$\\   /  $$  ______   \\$$| $$");
-        System.out.println("| $$   \\$$ /      \\ |       \\  /       \\ /      \\ | $$ /      \\ | $$$\\ /  $$$ |      \\ |  \\| $$");
-        System.out.println("| $$      |  $$$$$$\\| $$$$$$$\\|  $$$$$$$|  $$$$$$\\| $$|  $$$$$$\\| $$$$\\  $$$$  \\$$$$$$\\| $$| $$");
-        System.out.println("| $$   __ | $$  | $$| $$  | $$ \\$$    \\ | $$  | $$| $$| $$    $$| $$\\$$ $$ $$ /      $$| $$| $$");
-        System.out.println("| $$__/  \\| $$__/ $$| $$  | $$ _\\$$$$$$\\| $$__/ $$| $$| $$$$$$$$| $$ \\$$$| $$|  $$$$$$$| $$| $$");
-        System.out.println(" \\$$    $$ \\$$    $$| $$  | $$|       $$ \\$$    $$| $$ \\$$     \\| $$  \\$ | $$ \\$$    $$| $$| $$");
-        System.out.println("  \\$$$$$$   \\$$$$$$  \\$$   \\$$ \\$$$$$$$   \\$$$$$$  \\$$  \\$$$$$$$ \\$$      \\$$  \\$$$$$$$ \\$$ \\$$");
+        final String ORANGE = "\033[38;5;208m";
+        final String RESET  = "\033[0m";
+
+        System.out.println(ORANGE + "  ______                                           __            __       __            __  __ " + RESET);
+        System.out.println(ORANGE + " /      \\                                         |  \\          |  \\     /  \\          |  \\|  \\" + RESET);
+        System.out.println(ORANGE + "|  $$$$$$\\  ______   _______    _______   ______  | $$  ______  | $$\\   /  $$  ______   \\$$| $$" + RESET);
+        System.out.println(ORANGE + "| $$   \\$$ /      \\ |       \\  /       \\ /      \\ | $$ /      \\ | $$$\\ /  $$$ |      \\ |  \\| $$" + RESET);
+        System.out.println(ORANGE + "| $$      |  $$$$$$\\| $$$$$$$\\|  $$$$$$$|  $$$$$$\\| $$|  $$$$$$\\| $$$$\\  $$$$  \\$$$$$$\\| $$| $$" + RESET);
+        System.out.println(ORANGE + "| $$   __ | $$  | $$| $$  | $$ \\$$    \\ | $$  | $$| $$| $$    $$| $$\\$$ $$ $$ /      $$| $$| $$" + RESET);
+        System.out.println(ORANGE + "| $$__/  \\| $$__/ $$| $$  | $$ _\\$$$$$$\\| $$__/ $$| $$| $$$$$$$$| $$ \\$$$| $$|  $$$$$$$| $$| $$" + RESET);
+        System.out.println(ORANGE + " \\$$    $$ \\$$    $$| $$  | $$|       $$ \\$$    $$| $$ \\$$     \\| $$  \\$ | $$ \\$$    $$| $$| $$" + RESET);
+        System.out.println(ORANGE + "  \\$$$$$$   \\$$$$$$  \\$$   \\$$ \\$$$$$$$   \\$$$$$$  \\$$  \\$$$$$$$ \\$$      \\$$  \\$$$$$$$ \\$$ \\$$" + RESET);
         System.out.println();
         System.out.println();
-    }
-}
+    }}

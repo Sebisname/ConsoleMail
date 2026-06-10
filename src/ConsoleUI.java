@@ -16,14 +16,22 @@ public class ConsoleUI {
     StorageService storage = new StorageService();
     private Message[] messages;
     private boolean running = true;
-    private String signature = "Gesendet mit ConsoleMail";
-    private String sortingType = "datum";
+    private String signature = "Sent with ConsoleMail";
+    private String sortingType = "date";
 
-    /**
-     * Vorbereitung (E-Mails werden schon mal vorab gefetcht)
-     *
-     * @param emailService wird für this.emailService gebraucht
-     */
+    private static final String ORANGE = "\033[38;5;208m";
+    private static final String BOLD   = "\033[1m";
+    private static final String DIM    = "\033[2m";
+    private static final String RESET  = "\033[0m";
+
+    private void printSeparator() {
+        System.out.println(DIM + "─────────────────────────────────────────" + RESET);
+    }
+
+    private void printOption(String key, String label) {
+        System.out.println("  " + ORANGE + BOLD + key + RESET + "  " + label);
+    }
+
     public ConsoleUI(EmailService emailService, int id) {
         this.emailService = emailService;
         this.input = new Scanner(System.in);
@@ -31,11 +39,6 @@ public class ConsoleUI {
         this.id = id;
     }
 
-    /**
-     * Regelt den Fehler, falls kein Int angegeben wird
-     *
-     * @return Input in Int oder -1 wenn keine Zahl
-     */
     public int getIntInput() {
         try {
             return Integer.parseInt(input.nextLine());
@@ -44,229 +47,206 @@ public class ConsoleUI {
         }
     }
 
-    /**
-     * Das Hauptmenü der Programms
-     */
     public void showMenu() {
         while (running) {
-
-            System.out.println("You have " + messages.length + " messages");
-            System.out.println("Please enter your choice: ");
-            System.out.println("1. Send a Message");
-            System.out.println("2. See Inbox");
-            System.out.println("3. Account");
-            System.out.println("4. Settings");
-            System.out.println("5. Exit");
-            System.out.println("6. Logout");
+            printSeparator();
+            System.out.println("  " + ORANGE + BOLD + messages.length + " messages" + RESET + " in your inbox");
+            printSeparator();
+            printOption("1.", "Compose message");
+            printOption("2.", "Inbox");
+            printOption("3.", "Account");
+            printOption("4.", "Settings");
+            printOption("5.", "Exit");
+            printOption("6.", "Logout");
+            printSeparator();
+            System.out.print("  > ");
             int choice = getIntInput();
             switch (choice) {
-                case 1:
-                    composeEmail();
-                    break;
-                case 2:
-                    showInbox();
-                    break;
-                case 3:
-                    account();
-                    break;
-                case 4:
-                    settings();
-                    break;
-                case 5:
-                    running = false;
-                    break;
+                case 1: composeEmail(); break;
+                case 2: showInbox(); break;
+                case 3: account(); break;
+                case 4: settings(); break;
+                case 5: running = false; break;
                 case 6:
                     storage.deleteCredentials(id);
                     running = false;
                     break;
                 default:
-                    System.out.println("Invalid choice.");
-                    break;
+                    System.out.println("  Invalid choice.");
             }
         }
-        System.out.println("Bye!");
+        System.out.println("  Goodbye!");
         System.exit(0);
     }
 
-    /**
-     * Wird verwendet, um die Inbox anzuzeigen
-     */
     public void showInbox() {
         messages = emailService.fetchEmail(sortingType);
         try {
             int start = currentPage * emailsPerPage;
             int end = Math.min(start + emailsPerPage, messages.length);
 
-            for (int i = start; i < end; i++) {
-                System.out.println("Message " + (i + 1) + ": ");
-                System.out.println("From:" + messages[i].getFrom()[0].toString());
-                System.out.println("Subject" + messages[i].getSubject());
-                System.out.println(sdf.format(messages[i].getSentDate()));
-                System.out.println("Press " + (i + 1) + " to read");
+            printSeparator();
+            System.out.println("  " + ORANGE + BOLD + "Inbox" + RESET
+                    + DIM + "  (page " + (currentPage + 1) + ")" + RESET);
+            printSeparator();
 
+            for (int i = start; i < end; i++) {
+                System.out.println("  " + ORANGE + "[" + (i + 1) + "]" + RESET
+                        + " " + BOLD + messages[i].getSubject() + RESET);
+                System.out.println("      " + DIM + "From: " + messages[i].getFrom()[0]
+                        + "   " + sdf.format(messages[i].getSentDate()) + RESET);
             }
+
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Please enter the Email you want to read ");
-        System.out.println("N. Nächste Seite");
-        System.out.println("P. Vorherige Seite");
-        System.out.println("(Press 0 to exit to the Main Menu)");
+
+        printSeparator();
+        printOption("N", "Next page");
+        printOption("P", "Previous page");
+        printOption("0", "Back to main menu");
+        System.out.print("  > ");
+
         String choice = input.nextLine();
         if (choice.equals("0")) {
-            showMenu();
+            return;
         } else if (choice.equalsIgnoreCase("n")) {
             currentPage++;
             showInbox();
         } else if (choice.equalsIgnoreCase("p")) {
             if (currentPage > 0) {
-                currentPage --;
+                currentPage--;
                 showInbox();
             }
         } else {
             try {
                 showEmail(messages[Integer.parseInt(choice) - 1]);
             } catch (NumberFormatException e) {
-                System.out.println("Ungültige Eingabe.");
+                System.out.println("  Invalid input.");
             }
         }
-
     }
 
-    /**
-     * Zeigt ausgewählte E-Mail
-     *
-     * @param message Ausgewählte E-Mail
-     */
     public void showEmail(Message message) {
         try {
-            System.out.println(sdf.format(message.getSentDate()));
-            System.out.println("From: " + message.getFrom()[0].toString());
-            System.out.println("Subject: " + message.getSubject());
+            printSeparator();
+            System.out.println("  " + ORANGE + BOLD + message.getSubject() + RESET);
+            System.out.println("  " + DIM + "From: " + message.getFrom()[0]
+                    + "   " + sdf.format(message.getSentDate()) + RESET);
+            printSeparator();
 
             Object content = message.getContent();
-
             if (content instanceof String) {
-                System.out.println("Content: " + content);
+                System.out.println(content);
             } else if (content instanceof MimeMultipart multipart) {
-
-                System.out.println("Content: " + multipart.getBodyPart(0).getContent().toString());
+                System.out.println(multipart.getBodyPart(0).getContent().toString());
             }
 
-            System.out.println("Please enter a choice");
-            System.out.println("A. Antworten");
-            System.out.println("D. Nachricht löschen");
-            System.out.println("(Press 0 to exit to the Main Menu)");
+            printSeparator();
+            printOption("A", "Reply");
+            printOption("D", "Delete");
+            printOption("0", "Back");
+            System.out.print("  > ");
+
             String choice = input.nextLine();
             switch (choice.toLowerCase()) {
                 case "d":
                     emailService.deleteEmail(message);
+                    System.out.println("  Message deleted.");
                     break;
                 case "a":
-                    System.out.println("Bitte Antwort Text eingeben");
+                    System.out.print("  Reply: ");
                     String replyText = input.nextLine();
                     emailService.replyEmail(message, replyText);
+                    break;
                 case "0":
                     break;
                 default:
-                    System.out.println("Invalid choice.");
+                    System.out.println("  Invalid choice.");
             }
-
         } catch (MessagingException | IOException e) {
-            System.out.println("Error (Failed to read): " + e.getMessage());
+            System.out.println("  Error (failed to read message): " + e.getMessage());
         }
-
     }
 
-    /**
-     * Modul zum E-Mail schreiben
-     */
     public void composeEmail() {
-        System.out.println("To:");
+        printSeparator();
+        System.out.println("  " + ORANGE + BOLD + "New Message" + RESET);
+        printSeparator();
+        System.out.print("  To:      ");
         String to = input.nextLine();
-
-        System.out.println("Subject:");
+        System.out.print("  Subject: ");
         String subject = input.nextLine();
-
-        System.out.println("Body:");
+        System.out.print("  Body:    ");
         String body = input.nextLine();
         body = body + "\n\n-- \n" + signature;
-
         emailService.sendEmail(to, subject, body);
-
+        System.out.println("  Message sent.");
     }
 
-    /**
-     * Account Menü
-     */
     public void account() {
-        System.out.println("1. Show Account");
-        System.out.println("2. Change Account");
-        System.out.println("3. Logout");
+        printSeparator();
+        System.out.println("  " + ORANGE + BOLD + "Account" + RESET);
+        printSeparator();
+        printOption("1.", "Show account");
+        printOption("2.", "Switch account");
+        printOption("3.", "Logout");
+        System.out.print("  > ");
         int choice = getIntInput();
 
         switch (choice) {
             case 1:
-                System.out.println(emailService.getEmail());
+                System.out.println("  " + emailService.getEmail());
                 break;
             case 2:
-                //emailService.disconnect();
                 String[] credentials = storage.changeAccount();
-                EmailService emailService = new EmailService(credentials[0], credentials[1]);
-                System.out.println("Changed Account to: "+emailService.getEmail());
+                EmailService newService = new EmailService(credentials[0], credentials[1]);
+                System.out.println("  Switched to: " + newService.getEmail());
                 break;
             case 3:
                 storage.deleteCredentials(id);
                 running = false;
                 break;
             default:
-                System.out.println("Invalid choice.");
-                break;
+                System.out.println("  Invalid choice.");
         }
     }
 
-    /**
-     * Einstellungen des Programms
-     */
     public void settings() {
-        System.out.println("Settings:");
-        System.out.println("0. to Exit");
-        System.out.println("1. Edit Signature: " + signature);
-        System.out.println("2. Emails per Page: " + emailsPerPage);
-        System.out.println("3. Sort Type: " + sortingType);
-        System.out.println("Please enter the Number of the Setting you want to edit:");
+        printSeparator();
+        System.out.println("  " + ORANGE + BOLD + "Settings" + RESET);
+        printSeparator();
+        printOption("0.", "Back");
+        printOption("1.", "Signature:       " + DIM + signature + RESET);
+        printOption("2.", "Emails per page: " + DIM + emailsPerPage + RESET);
+        printOption("3.", "Sort by:         " + DIM + sortingType + RESET);
+        System.out.print("  > ");
         int choice = getIntInput();
 
         switch (choice) {
             case 0:
                 break;
             case 1:
-                System.out.println("New Signature:");
+                System.out.print("  New signature: ");
                 signature = input.nextLine();
                 break;
             case 2:
-                System.out.println("Emails per Page:");
+                System.out.print("  Emails per page: ");
                 emailsPerPage = getIntInput();
                 break;
             case 3:
-                System.out.println("Sort Type:");
-                System.out.println("1. Date");
-                System.out.println("2. Name (a-z)");
+                printOption("1.", "Date");
+                printOption("2.", "Name (a-z)");
+                System.out.print("  > ");
                 int choice2 = getIntInput();
                 switch (choice2) {
-                    case 1:
-                        sortingType = "datum";
-                        break;
-                    case 2:
-                        sortingType = "name";
-                        break;
-                    default:
-                        System.out.println("Invalid choice.");
+                    case 1: sortingType = "date"; break;
+                    case 2: sortingType = "name"; break;
+                    default: System.out.println("  Invalid choice.");
                 }
                 break;
             default:
-                System.out.println("Invalid choice.");
-                break;
+                System.out.println("  Invalid choice.");
         }
     }
 }
