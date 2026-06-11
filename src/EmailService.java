@@ -13,6 +13,7 @@ public class EmailService {
     private Store store;
     private Folder inbox;
 
+
     /**
      * Erstellt einen neuen EmailService
      *
@@ -248,7 +249,7 @@ public class EmailService {
      *
      * @return messages (neueste zuerst)
      */
-    public Message[] fetchEmail(String sortType) {
+    public Message[] fetchEmail(SortTypes sortType) {
         Properties props = getImapProps();
 
         Session session = Session.getInstance(props, new Authenticator() {
@@ -269,14 +270,14 @@ public class EmailService {
             Message[] messages = inbox.getMessages();
 
             switch (sortType) {
-                case "datum":
+                case SortTypes.DATE:
                     Message[] reversedMessages = new Message[messages.length];
                     for (int i = 0; i < messages.length; i++) {
                         reversedMessages[i] = messages[messages.length - 1 - i];
                     }
                     return reversedMessages;
 
-                case "name":
+                case SortTypes.NAME:
                     Arrays.sort(messages, new Comparator<Message>() {
                         @Override
                         public int compare(Message m1, Message m2) {

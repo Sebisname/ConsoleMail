@@ -17,17 +17,26 @@ public class ConsoleUI {
     private Message[] messages;
     private boolean running = true;
     private String signature = "Sent with ConsoleMail";
-    private String sortingType = "date";
+    SortTypes sortType = SortTypes.DATE;
 
     private static final String ORANGE = "\033[38;5;208m";
     private static final String BOLD   = "\033[1m";
     private static final String DIM    = "\033[2m";
     private static final String RESET  = "\033[0m";
 
+
+    /**
+     * Prints a Seperator
+     */
     private void printSeparator() {
         System.out.println(DIM + "─────────────────────────────────────────" + RESET);
     }
 
+    /**
+     * Prints an Option with Orange Bold Number
+     * @param key The Key (Number) for the List
+     * @param label The Lable for the List
+     */
     private void printOption(String key, String label) {
         System.out.println("  " + ORANGE + BOLD + key + RESET + "  " + label);
     }
@@ -35,7 +44,7 @@ public class ConsoleUI {
     public ConsoleUI(EmailService emailService, int id) {
         this.emailService = emailService;
         this.input = new Scanner(System.in);
-        this.messages = emailService.fetchEmail(sortingType);
+        this.messages = emailService.fetchEmail(sortType);
         this.id = id;
     }
 
@@ -80,7 +89,7 @@ public class ConsoleUI {
     }
 
     public void showInbox() {
-        messages = emailService.fetchEmail(sortingType);
+        messages = emailService.fetchEmail(sortType);
         try {
             int start = currentPage * emailsPerPage;
             int end = Math.min(start + emailsPerPage, messages.length);
@@ -184,6 +193,9 @@ public class ConsoleUI {
         System.out.println("  Message sent.");
     }
 
+    /**
+     *
+     */
     public void account() {
         printSeparator();
         System.out.println("  " + ORANGE + BOLD + "Account" + RESET);
@@ -219,7 +231,7 @@ public class ConsoleUI {
         printOption("0.", "Back");
         printOption("1.", "Signature:       " + DIM + signature + RESET);
         printOption("2.", "Emails per page: " + DIM + emailsPerPage + RESET);
-        printOption("3.", "Sort by:         " + DIM + sortingType + RESET);
+        printOption("3.", "Sort by:         " + DIM + sortType + RESET);
         System.out.print("  > ");
         int choice = getIntInput();
 
@@ -240,8 +252,8 @@ public class ConsoleUI {
                 System.out.print("  > ");
                 int choice2 = getIntInput();
                 switch (choice2) {
-                    case 1: sortingType = "date"; break;
-                    case 2: sortingType = "name"; break;
+                    case 1: sortType = SortTypes.DATE; break;
+                    case 2: sortType = SortTypes.NAME; break;
                     default: System.out.println("  Invalid choice.");
                 }
                 break;
