@@ -5,6 +5,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
         StorageService storage = new StorageService();
         EmailService service;
+
         showLogo();
         int id = -1;
         if (storage.checkIfCredentialsSaved()) {
@@ -55,6 +56,25 @@ public class Main {
 
         System.out.println("Logged in successfully.");
         System.out.println("Welcome back " + service.getEmail());
+
+        String[][] config = EmailService.getProviderConfig(service.getEmail());
+        NetworkStates status = NetworkUtils.checkStability(config[0][0], 993);
+        switch (status) {
+            case STABLE:
+                System.out.println("Network: " + status.getColor() + "Stable" + status.getReset());
+                break;
+            case UNSTABLE:
+                System.out.println("Network: " + status.getColor() + "Unstable - sending emails may be slow" + status.getReset());
+                break;
+            case VERY_UNSTABLE:
+                System.out.println("Network: " + status.getColor() + "Very unstable - sending emails may fail" + status.getReset());
+                break;
+            case OFFLINE:
+                System.out.println("Network: " + status.getColor() + "Offline - no connection to mail server" + status.getReset());
+                break;
+        }
+
+
         //Main Menu aufrufen
         ConsoleUI ui = new ConsoleUI(service, id);
         ui.showMenu();
