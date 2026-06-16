@@ -311,8 +311,12 @@ public class EmailService {
      */
     public void disconnect() {
         try {
-            store.close();
-            inbox.close(true);
+            if (store != null && store.isConnected()) {
+                store.close();
+            }
+            if (inbox != null && inbox.isOpen()) {
+                inbox.close(true);
+            }
         } catch (MessagingException e) {
             System.out.println("Email service failed to close email: " + e.getMessage());
         }

@@ -89,49 +89,50 @@ public class ConsoleUI {
     }
 
     public void showInbox() {
-        messages = emailService.fetchEmail(sortType);
-        try {
-            int start = currentPage * emailsPerPage;
-            int end = Math.min(start + emailsPerPage, messages.length);
+        while (true) {
+            messages = emailService.fetchEmail(sortType);
 
-            printSeparator();
-            System.out.println("  " + ORANGE + BOLD + "Inbox" + RESET
-                    + DIM + "  (page " + (currentPage + 1) + ")" + RESET);
-            printSeparator();
-
-            for (int i = start; i < end; i++) {
-                System.out.println("  " + ORANGE + "[" + (i + 1) + "]" + RESET
-                        + " " + BOLD + messages[i].getSubject() + RESET);
-                System.out.println("      " + DIM + "From: " + messages[i].getFrom()[0]
-                        + "   " + sdf.format(messages[i].getSentDate()) + RESET);
-            }
-
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
-
-        printSeparator();
-        printOption("N", "Next page");
-        printOption("P", "Previous page");
-        printOption("0", "Back to main menu");
-        System.out.print("  > ");
-
-        String choice = input.nextLine();
-        if (choice.equals("0")) {
-            return;
-        } else if (choice.equalsIgnoreCase("n")) {
-            currentPage++;
-            showInbox();
-        } else if (choice.equalsIgnoreCase("p")) {
-            if (currentPage > 0) {
-                currentPage--;
-                showInbox();
-            }
-        } else {
             try {
-                showEmail(messages[Integer.parseInt(choice) - 1]);
-            } catch (NumberFormatException e) {
-                System.out.println("  Invalid input.");
+                int start = currentPage * emailsPerPage;
+                int end = Math.min(start + emailsPerPage, messages.length);
+
+                printSeparator();
+                System.out.println("  " + ORANGE + BOLD + "Inbox" + RESET
+                        + DIM + "  (page " + (currentPage + 1) + ")" + RESET);
+                printSeparator();
+
+                for (int i = start; i < end; i++) {
+                    System.out.println("  " + ORANGE + "[" + (i + 1) + "]" + RESET
+                            + " " + BOLD + messages[i].getSubject() + RESET);
+                    System.out.println("      " + DIM + "From: " + messages[i].getFrom()[0]
+                            + "   " + sdf.format(messages[i].getSentDate()) + RESET);
+                }
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
+
+            printSeparator();
+            printOption("N", "Next page");
+            printOption("P", "Previous page");
+            printOption("0", "Back to main menu");
+            System.out.print("  > ");
+
+            String choice = input.nextLine();
+
+            if (choice.equals("0")) {
+                return;
+            } else if (choice.equalsIgnoreCase("n")) {
+                currentPage++;
+            } else if (choice.equalsIgnoreCase("p")) {
+                if (currentPage > 0) {
+                    currentPage--;
+                }
+            } else {
+                try {
+                    showEmail(messages[Integer.parseInt(choice) - 1]);
+                } catch (NumberFormatException e) {
+                    System.out.println("  Invalid input.");
+                }
             }
         }
     }

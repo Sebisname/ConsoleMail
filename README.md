@@ -81,6 +81,7 @@ IntelliJ: Run → Edit Configurations → Environment Variables
 - Signatur
 - Einstellbare Anzahl angezeigter Emails
 - Emails löschen
+- Netzwerk Status am Anfang
 
 ---
 
